@@ -1,0 +1,69 @@
+.auth-layout-bg {
+    /*background-image: linear-gradient(225deg, #ff64f3 0, #e55de8 25%, #be55d8 50%, #984cc6 75%, #7544b5 100%);*/
+    background-image: var(--main-gradient);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999999999;
+    top: 0;
+    left: 0;
+    display: flex;
+}
+
+.form-bg {
+    width: 35%;
+    height: 100%;
+    background-color: var(--main-bg);
+    transition: 1s ease-in-out;
+}
+
+.login-form {
+    position: relative;
+    transition: 0.5s ease-in-out;
+    animation: 1s form-show-right ease-in-out;
+}
+
+.registration-form {
+    position: relative;
+    transition: 0.5s ease-in-out;
+    animation: 1s form-show-left ease-in-out;
+}
+
+.close-icon {
+    position: absolute;
+    top: 1%;
+    left: 0.5%;
+    z-index: 99999999999999;
+}
+
+.field-input {
+    padding-bottom: 2%;
+}
+
+@keyframes form-show-left {
+    from {
+        opacity: 0;
+        transform: translateX(-10%)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%)
+    }
+}
+
+@keyframes form-show-right {
+    from {
+        opacity: 0;
+        transform: translateX(10%)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%)
+    }
+}
+
+.error-message {
+    color: red;
+    width: 100%;
+    height: 20px;
+}

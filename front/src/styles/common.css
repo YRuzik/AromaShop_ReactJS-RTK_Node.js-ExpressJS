@@ -1,0 +1,100 @@
+.body-container {
+  max-width: 1520px;
+  margin: 0px auto;
+}
+
+h1 {
+  font-family: var(--t-title);
+  font-size: 300%;
+}
+
+h2 {
+  font-family: var(--t-title);
+  font-size: 150%;
+}
+
+p {
+  font-family: var(--t-body);
+  font-size: 150%;
+}
+
+span {
+  font-family: var(--t-body);
+  font-size: 95%;
+  color: rgb(77, 77, 77);
+}
+
+.mg-container {
+  margin: 0 10% 0 10%;
+}
+
+.pg-container {
+  padding: 0 10% 0 10%;
+}
+
+.flexbox-line {
+  display: flex;
+}
+
+.flexbox-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexbox-column-sb {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.al-i-c{
+  align-items: center;
+}
+
+.jc-c {
+  justify-content: center;
+}
+
+.flexbox-sb-c {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flexbox-sb-s {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.pos-a {
+  position: absolute;
+}
+
+.pos-r {
+  position: relative;
+}
+
+.link-style {
+  color: black;
+  font-family: var(--t-title);
+  font-size: 125%;
+  opacity: 100%;
+  transition: .2s ease-in-out;
+}
+
+.link-style:hover {
+  color: rgb(128, 128, 128);
+}
+
+.link-style-white {
+  color: white;
+  font-family: var(--t-title);
+  font-size: 125%;
+  opacity: 100%;
+  transition: .2s ease-in-out;
+}
+
+.link-style-white:hover {
+  color:gray;
+}

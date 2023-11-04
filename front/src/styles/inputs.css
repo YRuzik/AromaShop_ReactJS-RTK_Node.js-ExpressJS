@@ -1,0 +1,10 @@
+.classic-input {
+    border-bottom: 1px solid var(--main-black);
+}
+
+.outlined-input {
+    border: 2px solid var(--main-black);
+    border-radius: var(--min-br);
+    padding: 10px;
+    width: 100%;
+}

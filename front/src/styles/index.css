@@ -1,0 +1,121 @@
+@font-face {
+    font-family: "GilroyLight";
+    src: url("../assets/fonts/Gilroy-Light.otf");
+}
+@font-face {
+    font-family: "GilroyExtraBold";
+    src: url("../assets/fonts/Gilroy-ExtraBold.otf");
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("../assets/fonts/Montserrat-Medium.ttf");
+}
+
+:root {
+    --max-br: 50px;
+    --default-br: 15px;
+    --min-br: 6px;
+
+    --main-black: #272525;
+    --main-green: #1FAB8A;
+    --main-purple: #3C336C;
+
+    --secondary-purple: #EACEFF;
+    --secondary-light-purple: #EEF1F6;
+
+    --main-gradient: linear-gradient(to right top, #9796F0, #FBC7D4);
+
+    --main-bg: #FAFAFA;
+
+    --t-button: "Montserrat";
+    --t-title: "GilroyExtraBold";
+    --t-body: "GilroyLight";
+}
+
+html {
+    background-color: var(--main-bg);
+    font-family: 'GilroyLight';
+}
+
+* {
+	padding: 0px;
+	margin: 0px;
+	border: none;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+a, a:link, a:visited  {
+    text-decoration: none;
+}
+
+a:hover  {
+    text-decoration: none;
+}
+
+aside, nav, footer, header, section, main {
+	display: block;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    font-size: inherit;
+	font-weight: inherit;
+}
+
+ul, ul li {
+	list-style: none;
+}
+
+img {
+	vertical-align: top;
+}
+
+img, svg {
+	max-width: 100%;
+	height: auto;
+}
+
+address {
+  font-style: normal;
+}
+
+input, textarea, button, select {
+	font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background-color: transparent;
+}
+
+input::-ms-clear {
+	display: none;
+}
+
+button, input[type="submit"] {
+    display: inline-block;
+    box-shadow: none;
+    background-color: transparent;
+    background: none;
+    cursor: pointer;
+}
+
+input:focus, input:active,
+button:focus, button:active {
+    outline: none;
+}
+
+button::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+
+label {
+	cursor: pointer;
+}
+
+legend {
+	display: block;
+}

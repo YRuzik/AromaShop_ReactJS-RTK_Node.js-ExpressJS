@@ -1,0 +1,39 @@
+.w-10 {
+    width: 10%;
+}
+
+.w-25 {
+    width: 25%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-75 {
+    width: 75%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-10 {
+    height: 100px;
+}
+
+.h-25 {
+    height: 250px;
+}
+
+.h-50 {
+    height: 500px;
+}
+
+.h-75 {
+    height: 750px;
+}
+
+.h-100 {
+    height: 1000px;
+}

@@ -1,0 +1,86 @@
+.mask-bg {
+  background-image: url("../../../../assets/shapes/mask.svg");
+  background-position: start;
+  background-size: auto;
+  background-repeat: no-repeat;
+  -moz-background-size: 110%;
+  -webkit-background-size: 110%;
+  -o-background-size: 110%;
+  min-height: 888.61px;
+}
+
+.preview-photo {
+  background-image: url("../../../../assets/img/catalog_candles.png");
+  background-position: right 100px;
+  background-size: 48%;
+  background-repeat: no-repeat;
+  -moz-background-size: 48%;
+  -webkit-background-size: 48%;
+  -o-background-size: 48%;
+  height: 500px;
+  /* height: 120%; */
+  display: flex;
+}
+
+.filter-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter-indicator {
+  height: 8px;
+  width: 100%;
+  margin-bottom: 30px;
+  background-color: var(--secondary-light-purple);
+  transition: .2s ease-in-out;
+}
+
+.filter-container {
+  padding-top: 125px;
+  position: relative;
+}
+
+.filter-label {
+  color: rgb(163, 163, 163);
+  cursor: pointer;
+  text-align: center;
+  transition: .2s ease-in-out;
+}
+
+.filter-label:hover {
+  color: rgb(119, 119, 119);
+}
+
+.product-card-container {
+  border-radius: var(--default-br);
+  background-color: white;
+  height: 550px;
+  transition: .3s ease-in-out;
+  cursor: pointer;
+}
+  
+.product-card-img {
+  height: 300px;
+  width: 100%;
+  object-fit: fill;
+}
+
+.product-card-img img {
+  min-width: 100%;
+  min-height: 100%;
+  border-top-right-radius: var(--default-br);
+  border-top-left-radius: var(--default-br);
+}
+
+.catalog-grid {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.product-card-container:hover {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
