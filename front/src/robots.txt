@@ -1,0 +1,23 @@
+User-Agent: *
+
+Disallow: /*?*
+Disallow: /*%
+Disallow: *?s=
+Disallow: *?p=
+Disallow: /catalog/products/*
+Disallow: /sets/*
+Disallow: /search/*
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /success-activation/
+Disallow: /login/*
+Disallow: /login/
+Disallow: /profile/
+Disallow: /profile/*
+
+Allow: /catalog/
+Allow: /sets/
+Allow: /contacts/
+Allow: /
+
+Sitemap: https://aromashop.ru/sitemap.xml

@@ -1,11 +1,34 @@
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup"
 import ElevatedButton, {ButtonStyles} from "../../../../widgets/elevatedButton.tsx";
+import {useLoginMutation} from "../../../../utils/redux/features/auth/authApiSlice.ts";
+import {useDispatch} from "react-redux";
+import {setCredentials} from "../../../../utils/redux/features/auth/authSlice.ts";
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 
 type LoginFormProps = {
     changeState?: Function
 }
 const LoginForm = ({changeState}: LoginFormProps) => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const [login] = useLoginMutation()
+
+    const [serverError, setServerError] = useState("")
+
+    const handleSubmit = async (identity: string, pwd: string) => {
+        try {
+            const userData = await login({identity: identity, password: pwd}).unwrap()
+            dispatch(setCredentials({...userData, user: identity}))
+            navigate("/")
+        } catch (err) {
+            if (err instanceof Error) {
+                setServerError(err.message)
+            }
+        }
+    }
+
     return (
         <div className={"login-form mr-10 ml-10"}>
             <Formik
@@ -58,8 +81,12 @@ const LoginForm = ({changeState}: LoginFormProps) => {
                                 </div>
                             </div>
                         </div>
+                        <div>
+                            {serverError}
+                        </div>
                         <div className={"w-100"} style={{height: 40}}>
-                            <ElevatedButton onClick={() => {
+                            <ElevatedButton onClick={async () => {
+                                await handleSubmit(values.values.identity, values.values.password)
                             }} label={"Войти"} disabled={!(values.isValid && values.dirty) || values.isSubmitting}/>
                         </div>
                         <div className={"flexbox-sb-c"} style={{height: 75}}>

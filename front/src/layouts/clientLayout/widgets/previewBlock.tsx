@@ -1,18 +1,15 @@
-import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
 type PreviewBlockProps = {
   route: string;
   title: string;
   subtitle: string;
-  child: ReactNode;
   photo: string;
 };
 const PreviewBlock = ({
   route,
   title,
   subtitle,
-  child,
   photo,
 }: PreviewBlockProps) => {
   const navigator = useNavigate()
@@ -27,7 +24,6 @@ const PreviewBlock = ({
           </div>
           <h1>{title.toUpperCase()}</h1>
           {subtitle}
-          {child}
         </div>
         <div className="w-50" style={{ marginBottom: "-12%" }}>
           <img src={photo} width={"100%"} />

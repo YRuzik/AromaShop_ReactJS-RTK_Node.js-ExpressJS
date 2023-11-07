@@ -1,6 +1,12 @@
 import * as Yup from "yup";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import ElevatedButton, {ButtonStyles} from "../../../../widgets/elevatedButton.tsx";
+import {
+    useRegisterMutation
+} from "../../../../utils/redux/features/auth/authApiSlice.ts";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {IUser} from "../../../../utils/interfaces/iuser.ts";
 
 type RegistrationFormProps = {
     changeState?: Function;
@@ -8,6 +14,21 @@ type RegistrationFormProps = {
 const RegistrationForm = ({changeState}: RegistrationFormProps) => {
     const regExpKT = RegExp(/^[А-Яа-я -]+$/)
     const regExpLT = RegExp(/^[A-Za-z -]+$/)
+    const [register] = useRegisterMutation()
+    const navigate = useNavigate()
+    const [serverError, setServerError] = useState("")
+
+    const handleSubmit = async (userCredentials: IUser) => {
+        try {
+            await register(userCredentials).unwrap()
+            navigate("/")
+        } catch (err) {
+            if (err instanceof Error) {
+                setServerError(err.message)
+            }
+        }
+    }
+
     return (
         <div className={"ml-10 mr-10 registration-form"}>
             <Formik
@@ -189,8 +210,19 @@ const RegistrationForm = ({changeState}: RegistrationFormProps) => {
                                 </div>
                             </div>
                         </div>
+                        <div>
+                            {serverError}
+                        </div>
                         <div className={"w-100"} style={{height: 40}}>
-                            <ElevatedButton onClick={() => {
+                            <ElevatedButton onClick={async () => {
+                                await handleSubmit({
+                                    name: values.values.name,
+                                    surname: values.values.surname,
+                                    patronymic: values.values.patronymic,
+                                    login: values.values.login,
+                                    email: values.values.email,
+                                    password: values.values.password
+                                })
                             }} label={"Зарегистрироваться"}
                                             disabled={!(values.isValid && values.dirty && values.values.rules) || values.isSubmitting}/>
                         </div>

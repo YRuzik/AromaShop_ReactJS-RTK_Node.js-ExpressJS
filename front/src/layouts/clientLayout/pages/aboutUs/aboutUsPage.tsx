@@ -1,5 +1,6 @@
 import PreviewBlock from "../../widgets/previewBlock";
 import preview from "../../../../assets/img/previews/contacts.png";
+import {Labels} from "../../../../labels.tsx";
 
 const AboutUsPage = () => {
   return (
@@ -7,7 +8,7 @@ const AboutUsPage = () => {
       <PreviewBlock
         title="Кто такие aroma shop"
         subtitle="Aroma - это команда гуру творчества, со своей экспертностью в свечевом сегменте. Мы знаем как волнителен, чаще стрессовый бывает заказ брендированной продукции и корпоративных подарков, потому, что были по обе стороны заказа. Это нам позволило изучить проблематики бизнесов и представить лучшие и современые решения для наших клиентов"
-        route="Информация"
+        route={Labels.contacts}
         photo={preview}
       />
       <div className="body-container pos-r" style={{paddingTop: '150px'}}>

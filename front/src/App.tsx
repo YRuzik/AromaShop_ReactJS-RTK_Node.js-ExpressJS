@@ -8,7 +8,6 @@ import AboutUsPage from "./layouts/clientLayout/pages/aboutUs/aboutUsPage"
 import AuthLayout from "./layouts/clientLayout/pages/authRegistration/authLayout.tsx";
 
 function App() {
-
     return (
         <div>
             <BrowserRouter>
