@@ -13,7 +13,7 @@ module.exports = class ApiError extends Error {
     }
 
     static AlreadyRegistered() {
-        return new ApiError(400, "Пользоавтель уже зарегистрирован")
+        return new ApiError(409, "Пользователь уже зарегистрирован")
     }
 
     static BadRequest(message, errors = []) {

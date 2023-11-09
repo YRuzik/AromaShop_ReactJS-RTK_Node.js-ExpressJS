@@ -23,6 +23,7 @@ const LoginForm = ({changeState}: LoginFormProps) => {
             dispatch(setCredentials({...userData, user: identity}))
             navigate("/")
         } catch (err) {
+            console.log(err)
             if (err instanceof Error) {
                 setServerError(err.message)
             }
@@ -87,6 +88,7 @@ const LoginForm = ({changeState}: LoginFormProps) => {
                         <div className={"w-100"} style={{height: 40}}>
                             <ElevatedButton onClick={async () => {
                                 await handleSubmit(values.values.identity, values.values.password)
+                                values.isSubmitting = false;
                             }} label={"Войти"} disabled={!(values.isValid && values.dirty) || values.isSubmitting}/>
                         </div>
                         <div className={"flexbox-sb-c"} style={{height: 75}}>
@@ -96,7 +98,6 @@ const LoginForm = ({changeState}: LoginFormProps) => {
                             <div className={"w-50"} style={{height: 50}}>
                                 <ElevatedButton onClick={() => {
                                     if (changeState != null) {
-                                        console.log("sdfsdf")
                                         changeState()
                                     }
                                 }} label={"Зарегистрироваться"} style={ButtonStyles.white}/>

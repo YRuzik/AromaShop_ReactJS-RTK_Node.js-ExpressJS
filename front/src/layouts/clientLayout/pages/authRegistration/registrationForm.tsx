@@ -11,6 +11,7 @@ import {IUser} from "../../../../utils/interfaces/iuser.ts";
 type RegistrationFormProps = {
     changeState?: Function;
 }
+
 const RegistrationForm = ({changeState}: RegistrationFormProps) => {
     const regExpKT = RegExp(/^[А-Яа-я -]+$/)
     const regExpLT = RegExp(/^[A-Za-z -]+$/)
@@ -23,9 +24,7 @@ const RegistrationForm = ({changeState}: RegistrationFormProps) => {
             await register(userCredentials).unwrap()
             navigate("/")
         } catch (err) {
-            if (err instanceof Error) {
-                setServerError(err.message)
-            }
+            setServerError(err.data?.message)
         }
     }
 
@@ -208,10 +207,10 @@ const RegistrationForm = ({changeState}: RegistrationFormProps) => {
                                 <div className={"error-message"}>
                                     <ErrorMessage name={"rules"}/>
                                 </div>
+                                <div className={"error-message"}>
+                                    {serverError}
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            {serverError}
                         </div>
                         <div className={"w-100"} style={{height: 40}}>
                             <ElevatedButton onClick={async () => {
@@ -223,6 +222,7 @@ const RegistrationForm = ({changeState}: RegistrationFormProps) => {
                                     email: values.values.email,
                                     password: values.values.password
                                 })
+                                values.resetForm()
                             }} label={"Зарегистрироваться"}
                                             disabled={!(values.isValid && values.dirty && values.values.rules) || values.isSubmitting}/>
                         </div>
@@ -235,6 +235,7 @@ const RegistrationForm = ({changeState}: RegistrationFormProps) => {
                                     if (changeState != null) {
                                         changeState()
                                     }
+                                    values.isSubmitting = false;
                                 }} label={"Войти"} style={ButtonStyles.white}/>
                             </div>
                         </div>

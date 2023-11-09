@@ -18,8 +18,6 @@ router.post('/registration', async (req, res, next) => {
             return (user.email === req.body.email) || (user.login === req.body.login);
         })
 
-        console.log(hasDuplicates)
-
         if (hasDuplicates) {
             throw apiError.AlreadyRegistered()
         }
