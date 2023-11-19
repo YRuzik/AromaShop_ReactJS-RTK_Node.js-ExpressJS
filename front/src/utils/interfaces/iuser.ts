@@ -14,5 +14,5 @@ export interface IUserLogin {
 
 export interface IAuth {
     user: IUser
-    token: string
+    accessToken: string
 }

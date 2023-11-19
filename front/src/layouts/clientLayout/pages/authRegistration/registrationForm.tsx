@@ -23,7 +23,7 @@ const RegistrationForm = ({changeState}: RegistrationFormProps) => {
         try {
             await register(userCredentials).unwrap()
             navigate("/")
-        } catch (err) {
+        } catch (err: any) {
             setServerError(err.data?.message)
         }
     }

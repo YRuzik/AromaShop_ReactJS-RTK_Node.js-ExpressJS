@@ -1,10 +1,10 @@
 import {apiSlice} from "../../api/apiSlice.ts";
-import {IUser, IUserLogin} from "../../../interfaces/iuser.ts";
+import {IAuth, IUser, IUserLogin} from "../../../interfaces/iuser.ts";
 
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        login: builder.mutation<IUser, IUserLogin>({
+        login: builder.mutation<IAuth, IUserLogin>({
             query: credentials => ({
                 url: '/auth',
                 method: 'POST',
@@ -19,8 +19,16 @@ export const authApiSlice = apiSlice.injectEndpoints({
                     body: {...credentials}
                 })
             }
+        ),
+        refresh: builder.mutation<IAuth, void>(
+            {
+                query: () => ({
+                    url: '/refresh',
+                    method: 'GET'
+                })
+            }
         )
     })
 })
 
-export const {useLoginMutation, useRegisterMutation} = authApiSlice
+export const {useLoginMutation, useRegisterMutation, useRefreshMutation} = authApiSlice

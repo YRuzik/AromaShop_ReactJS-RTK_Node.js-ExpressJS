@@ -6,8 +6,24 @@ import CatalogPage from "./layouts/clientLayout/pages/catalog/catalogPage"
 import Menu from "./layouts/clientLayout/widgets/menu"
 import AboutUsPage from "./layouts/clientLayout/pages/aboutUs/aboutUsPage"
 import AuthLayout from "./layouts/clientLayout/pages/authRegistration/authLayout.tsx";
+import {useEffect} from "react";
+import {useDispatch} from "react-redux";
+import {setCredentials} from "./utils/redux/features/auth/authSlice.ts";
+import {useRefreshMutation} from "./utils/redux/features/auth/authApiSlice.ts";
 
-function App() {
+const App = () => {
+    const [refresh] = useRefreshMutation()
+    const dispatch = useDispatch()
+
+    ///TODO change interfaces
+    useEffect(() => {
+        if (localStorage.getItem("aroma-token")) {
+            refresh().then(v => {
+                dispatch(setCredentials(v.data))
+            })
+        }
+    }, [])
+
     return (
         <div>
             <BrowserRouter>

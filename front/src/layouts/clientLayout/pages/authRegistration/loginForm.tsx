@@ -14,13 +14,13 @@ const LoginForm = ({changeState}: LoginFormProps) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [login] = useLoginMutation()
-
     const [serverError, setServerError] = useState("")
 
     const handleSubmit = async (identity: string, pwd: string) => {
         try {
             const userData = await login({identity: identity, password: pwd}).unwrap()
-            dispatch(setCredentials({...userData, user: identity}))
+            dispatch(setCredentials(userData))
+            localStorage.setItem("aroma-token", userData.accessToken)
             navigate("/")
         } catch (err) {
             console.log(err)
