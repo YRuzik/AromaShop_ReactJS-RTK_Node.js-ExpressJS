@@ -9,6 +9,14 @@ const AuthLayout = () => {
     const [login, setLogin] = useState(true)
     const navigator = useNavigate()
     let container = document.getElementById("formm")
+
+    useEffect(() => {
+        window.document.body.style.overflow = "hidden"
+        return () => {
+            window.document.body.style.overflow = "auto"
+        }
+    }, []);
+
     useEffect(() => {
         if (container != null) {
             if (login) {
@@ -26,7 +34,8 @@ const AuthLayout = () => {
                 <Icon icon={AppIcons.close} onClick={() => navigator(-1)}/>
             </div>
             <div className={"form-bg"} id={"formm"}>
-                {login ? <LoginForm changeState={() => setLogin(false)}/> : <RegistrationForm changeState={() => setLogin(true)}/>}
+                {login ? <LoginForm changeState={() => setLogin(false)}/> :
+                    <RegistrationForm changeState={() => setLogin(true)}/>}
             </div>
         </div>
     )

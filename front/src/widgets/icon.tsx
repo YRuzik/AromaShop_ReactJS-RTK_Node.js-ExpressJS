@@ -7,6 +7,7 @@ import star_i from "../assets/icons/star.svg"
 import support_i from "../assets/icons/support.svg"
 import login_i from "../assets/icons/login.svg"
 import close_i from "../assets/icons/close.svg"
+import done_i from "../assets/icons/done.svg"
 
 export enum AppIcons {
     person = person_i,
@@ -17,7 +18,8 @@ export enum AppIcons {
     star = star_i,
     support = support_i,
     login = login_i,
-    close = close_i
+    close = close_i,
+    done = done_i
 }
 
 type IconProps = {

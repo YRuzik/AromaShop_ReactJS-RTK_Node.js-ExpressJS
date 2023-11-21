@@ -84,3 +84,21 @@
 .product-card-container:hover {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
+
+.f-container {
+  padding-left: 30px;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+  color: rgb(128, 128, 128);
+}
+
+.f-container:hover {
+  color: var(--main-black);
+}
+
+.f-container-active {
+  color: var(--main-black);
+  font-weight: bold;
+  transition: .2s ease-in-out;
+  text-decoration: underline;
+}

@@ -6,7 +6,6 @@ import logo from "../../../assets/logo.png"
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {logOut, selectCurrentToken, selectCurrentUser} from "../../../utils/redux/features/auth/authSlice.ts";
-import * as Cookies from "js-cookie";
 
 const Header = () => {
     const navigate = useNavigate()
@@ -30,7 +29,6 @@ const Header = () => {
                 </div>
                 {token && user ? <div className={"flexbox-line"}><Icon icon={AppIcons.person} color="red"/><Icon
                     icon={AppIcons.logout} color="red" onClick={() => {
-                        Cookies.default.remove("jwt");
                     dispatch(logOut())
                 }}/></div> : <div className={"flexbox-line"}>
                     <Icon icon={AppIcons.login} onClick={() => navigate("/login")}/>
