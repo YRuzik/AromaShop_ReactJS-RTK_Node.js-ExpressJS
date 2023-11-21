@@ -23,6 +23,9 @@ const App = () => {
                 dispatch(setCredentials(v.data))
             })
         }
+        if (!localStorage.getItem("aroma-cart")) {
+            localStorage.setItem("aroma-cart", "[]")
+        }
     }, [])
 
     return (

@@ -77,3 +77,45 @@
   border-radius: var(--default-br);
   box-shadow: 5px 15px 15px 15px rgba(0,0,0,.05);
 }
+
+.modal-dialog {
+  position: relative;
+  padding: 20px;
+  background-color: var(--main-bg);
+  border-radius: var(--default-br);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 70%;
+}
+
+.modal-exit {
+  right: 5px;
+  top: 5px;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+}
+
+.modal-dialog-bg {
+  position: absolute;
+  z-index: 9999999999999999999;
+  background-color: rgba(0,0,0,.36);
+  width: 100%;
+  height: 100vh;
+}
+
+.cart-entity-img {
+  width: 70px;
+  height: 70px;
+  border-radius: var(--min-br);
+  object-fit: cover;
+}
+
+.cart-entity-button {
+  padding: 0 5px 0 5px;
+  margin: 0 5px 0 5px;
+  border: 1px solid var(--main-black);
+  user-select: none;
+  cursor: pointer;
+}
