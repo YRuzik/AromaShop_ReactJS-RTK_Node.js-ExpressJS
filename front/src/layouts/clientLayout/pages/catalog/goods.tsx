@@ -7,7 +7,6 @@ import {useFetchProductsQuery} from "../../../../utils/redux/features/common/com
 export const filtersArray = ["Году выпуска", "Наименованию", "Цене"]
 
 const Goods = () => {
-    // const [goods, setGoods] = useState<IProduct[]>([])
     const {
         data: goods,
         isLoading,
@@ -70,7 +69,7 @@ const Goods = () => {
                         setSortedGoods(tmpArray.sort((a, b) => {
                             return a.price - b.price
                         }))
-                        break
+                        break;
                 }
             }
         }

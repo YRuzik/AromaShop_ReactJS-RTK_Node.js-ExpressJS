@@ -10,6 +10,7 @@ import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {setCredentials} from "./utils/redux/features/auth/authSlice.ts";
 import {useRefreshMutation} from "./utils/redux/features/auth/authApiSlice.ts";
+import ProductPage from "./layouts/clientLayout/pages/productPage/productPage.tsx";
 
 const App = () => {
     const [refresh] = useRefreshMutation()
@@ -35,6 +36,7 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<MainPage/>}/>
                         <Route path="/catalog" element={<CatalogPage/>}/>
+                        <Route path="/catalog/:id" element={<ProductPage/>}/>
                         <Route path="/contacts" element={<AboutUsPage/>}/>
                         <Route path="/login" element={<AuthLayout/>}/>
                     </Routes>

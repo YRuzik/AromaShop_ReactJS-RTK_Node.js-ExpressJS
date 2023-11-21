@@ -1,9 +1,8 @@
 import {Labels} from "../../../labels";
-import ElevatedButton from "../../../widgets/elevatedButton";
 import Icon, {AppIcons} from "../../../widgets/icon";
 import SearchBar from "../../../widgets/searchBar";
 import logo from "../../../assets/logo.png"
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {logOut, selectCurrentToken, selectCurrentUser} from "../../../utils/redux/features/auth/authSlice.ts";
 
@@ -23,16 +22,19 @@ const Header = () => {
                 <div></div>
 
                 <SearchBar/>
-                <div className={"w-25"}>
-                    <ElevatedButton label="+380 630 130 103" onClick={() => {
-                    }}/>
-                </div>
+                {/*<div className={"w-25"}>*/}
+                {/*    <ElevatedButton label="+380 630 130 103" onClick={() => {*/}
+                {/*    }}/>*/}
+                {/*</div>*/}
                 {token && user ? <div className={"flexbox-line"}><Icon icon={AppIcons.person} color="red"/><Icon
                     icon={AppIcons.logout} color="red" onClick={() => {
                     dispatch(logOut())
                 }}/></div> : <div className={"flexbox-line"}>
-                    <Icon icon={AppIcons.login} onClick={() => navigate("/login")}/>
+                    <Link to={"/login"} className={"link-style mr-10"}>Войти</Link>
+                    <Link to={"/login"} className={"link-style"}>Зарегистрироваться</Link>
+                    {/*<Icon icon={AppIcons.login} onClick={() => navigate("/login")}/>*/}
                 </div>}
+                <Icon icon={AppIcons.cart}/>
 
                 <div>
                     <div></div>

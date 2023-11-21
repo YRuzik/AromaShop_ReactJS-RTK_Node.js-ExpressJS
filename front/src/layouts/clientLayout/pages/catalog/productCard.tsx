@@ -2,19 +2,22 @@ import Icon, {AppIcons} from "../../../../widgets/icon";
 import {FC} from "react";
 import {IProduct} from "../../../../utils/interfaces/icommon.ts";
 import {publicUrl} from "../../../../utils/common.ts";
+import {useNavigate} from "react-router-dom";
 
 type ProductCardProps = {
     product: IProduct
 }
 
 const ProductCard: FC<ProductCardProps> = ({product}) => {
+    const navigate = useNavigate()
     const {
         title,
         price,
         image_url,
+        product_id
     } = product
     return (
-        <div className="product-card-container">
+        <div onClick={() => navigate(`/catalog/${product_id}`)} className="product-card-container">
             <div className="product-card-img">
                 <img src={`${publicUrl}${image_url}`} className={"product-card-img"} alt={title}/>
             </div>
