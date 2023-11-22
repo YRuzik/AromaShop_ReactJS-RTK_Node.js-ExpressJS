@@ -4,6 +4,12 @@ import ElevatedButton from "../../../widgets/elevatedButton.tsx";
 import {ICartEntity, IProduct} from "../../../utils/interfaces/icommon.ts";
 import Icon, {AppIcons} from "../../../widgets/icon.tsx";
 import {publicUrl} from "../../../utils/common.ts";
+import {useSelector} from "react-redux";
+import {selectCurrentToken, selectCurrentUser} from "../../../utils/redux/features/auth/authSlice.ts";
+import {
+    useCreateOrderMutation,
+    useValidatePasswordMutation
+} from "../../../utils/redux/features/users/usersApiSlice.ts";
 
 export const addToCart = (product: IProduct) => {
     const existsCart: ICartEntity[] = JSON.parse(localStorage.getItem("aroma-cart")!)
@@ -46,8 +52,14 @@ type modalCartProps = {
     onClose(): void
 }
 const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
+    const token = useSelector(selectCurrentToken)
     const [cart, setCart] = useState<ICartEntity[]>([])
     const [sum, setSum] = useState(0)
+    const [validatePassword] = useValidatePasswordMutation()
+    const [createOrder] = useCreateOrderMutation()
+    const user = useSelector(selectCurrentUser)
+    const [password, setInputPassword] = useState("")
+    const [error, setError] = useState("")
 
     useEffect(() => {
         if (localStorage.getItem("aroma-cart")) {
@@ -63,6 +75,12 @@ const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
         setSum(tmpSum)
     }, [cart])
 
+    useEffect(() => {
+        return () => {
+            setError("")
+        }
+    }, []);
+
     return (
         <ModalDialog onClose={() => onClose()} isOpen={isOpen} content={
             <div className={"flexbox-line al-i-s"} style={{height: 400}}>
@@ -71,9 +89,26 @@ const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
                         <h2 className={"mb-1"}>Оформить заказ</h2>
                         Введите пароль для подтверждения заказа
                     </div>
-                    <input className={"classic-input mb-10"} placeholder={"Пароль"} type={"password"}/>
-                    <ElevatedButton onClick={() => {
-                    }} label={"Заказать"}/>
+                    <input className={"classic-input mb-10"} placeholder={"Пароль"} type={"password"}
+                           onChange={(v) => setInputPassword(v.currentTarget.value)}/>
+                    <div>
+                        {error ?? <div className={"error-message"}>{error}</div>}
+                        <ElevatedButton onClick={async () => {
+                            if (user !== null) {
+                                try {
+                                    await validatePassword({user_id: user.id!, password: password})
+                                    const cart = localStorage.getItem("aroma-cart");
+                                    if (cart !== null) {
+                                        await createOrder({order_json: cart, user_id: user.id!})
+                                    }
+                                    localStorage.setItem("aroma-cart", "[]")
+                                } catch (e: any) {
+                                    setError(e.data.message)
+                                }
+                            }
+                        }} label={(token === null) ? "Для оформления заказа авторизуйтесь" : "Заказать"}
+                                        disabled={(cart.length === 0) || (token === null)}/>
+                    </div>
                 </div>
                 <div style={{borderRight: "2px solid black", height: "100%", margin: "0 20px 0 20px"}}>
 
@@ -81,8 +116,8 @@ const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
                 <div className={"w-75 flexbox-column pos-r"} style={{justifyContent: 'space-between'}}>
                     <h2>Корзина</h2>
                     <div style={{maxHeight: "300px", overflowY: 'auto'}}>
-                        {cart.map((cartEntity, index) => <div>
-                            <div key={index} className={"flexbox-sb-c"}>
+                        {cart.map((cartEntity, index) => <div key={index}>
+                            <div className={"flexbox-sb-c"}>
                                 <div className={"flexbox-line al-i-c w-25"}>
                                     <img className={"cart-entity-img"} alt={cartEntity.title}
                                          src={`${publicUrl}${cartEntity.image_url}`}/>

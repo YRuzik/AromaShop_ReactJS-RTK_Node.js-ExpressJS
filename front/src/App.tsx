@@ -11,6 +11,7 @@ import {useDispatch} from "react-redux";
 import {setCredentials} from "./utils/redux/features/auth/authSlice.ts";
 import {useRefreshMutation} from "./utils/redux/features/auth/authApiSlice.ts";
 import ProductPage from "./layouts/clientLayout/pages/productPage/productPage.tsx";
+import ProfilePage from "./layouts/clientLayout/pages/profilePage/profilePage.tsx";
 
 const App = () => {
     const [refresh] = useRefreshMutation()
@@ -42,6 +43,7 @@ const App = () => {
                         <Route path="/catalog/:id" element={<ProductPage/>}/>
                         <Route path="/contacts" element={<AboutUsPage/>}/>
                         <Route path="/login" element={<AuthLayout/>}/>
+                        <Route path="/profile" element={<ProfilePage/>}/>
                     </Routes>
                     <Footer/>
                 </div>

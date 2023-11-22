@@ -11,12 +11,12 @@ type modalDialogProps = {
 const modalRootElement = document.querySelector('#modal')
 
 const ModalDialog: FC<modalDialogProps> = ({onClose, isOpen, content}) => {
-    const ref = useRef()
+    const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (isOpen) {
             window.document.body.style.overflow = "hidden"
-            const checkOutside = () => {
+            const checkOutside = (e: any) => {
                 if (e.target?.contains(ref.current) && e.target !== ref.current) {
                     onClose && onClose();
                 }

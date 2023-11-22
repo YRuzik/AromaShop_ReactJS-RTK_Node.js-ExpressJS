@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className="footer-bg mt-5" style={{position: 'relative'}}>
+    <div className="footer-bg mt-5" >
       <div className="body-container flexbox-line">
         <div className="w-25">
           <div className="pb-10">

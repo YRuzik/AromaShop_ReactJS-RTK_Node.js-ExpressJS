@@ -9,10 +9,10 @@ router.post('/auth', async (req, res, next) => {
     try {
         const cookies = req.cookies;
 
-        const {identity, password} = req.body;
-        if (!identity || !password) return res.status(400).json({'message': 'Username and password are required.'});
+        const {login, password} = req.body;
+        if (!login || !password) return res.status(400).json({'message': 'Username and password are required.'});
 
-        const foundUser = await knex.select("*").from("users").where("login", identity);
+        const foundUser = await knex.select("*").from("users").where("login", login);
         if (foundUser.length <= 0) return res.sendStatus(401); //Unauthorized
 
         const extractedUser = foundUser[0]
@@ -116,7 +116,6 @@ router.get('/refresh', async (req, res, next) => {
         const cookies = req.cookies;
         if (!cookies?.jwt) return res.sendStatus(401);
         const refreshToken = cookies.jwt;
-        res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
 
         const foundUser = (await knex.select("*")
             .from("refresh_tokens")
@@ -162,6 +161,8 @@ router.get('/refresh', async (req, res, next) => {
                 await knex('refresh_tokens')
                     .where("user_id", foundUser[0].id)
                     .update("token", newRefreshToken)
+
+                res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
 
                 res.cookie('jwt', newRefreshToken, {
                     httpOnly: true,

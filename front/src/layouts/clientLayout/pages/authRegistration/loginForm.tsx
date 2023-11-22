@@ -18,7 +18,7 @@ const LoginForm = ({changeState}: LoginFormProps) => {
 
     const handleSubmit = async (identity: string, pwd: string) => {
         try {
-            const userData = await login({identity: identity, password: pwd}).unwrap()
+            const userData = await login({login: identity, password: pwd}).unwrap()
             dispatch(setCredentials(userData))
             localStorage.setItem("aroma-token", userData.accessToken)
             navigate("/")
@@ -35,7 +35,7 @@ const LoginForm = ({changeState}: LoginFormProps) => {
             <Formik
                 initialValues={
                     {
-                        identity: '',
+                        login: '',
                         password: '',
                     }
                 }
@@ -50,18 +50,18 @@ const LoginForm = ({changeState}: LoginFormProps) => {
                             <div className={"pb-5"}>
                                 <div className={"pb-1"}>
                                     <label>
-                                        Эл. почта или логин
+                                        Логин
                                     </label>
                                 </div>
                                 <Field
                                     className={"outlined-input"}
-                                    name={"identity"}
-                                    id={"identity"}
-                                    type={"identity"}
-                                    placeholder={"aromashop@example.com"}
+                                    name={"login"}
+                                    id={"login"}
+                                    type={"login"}
+                                    placeholder={"exampleDestroyer"}
                                 />
                                 <div className={"error-message"}>
-                                    <ErrorMessage name={"identity"}/>
+                                    <ErrorMessage name={"login"}/>
                                 </div>
                             </div>
                             <div className={"pb-5"}>
@@ -87,7 +87,7 @@ const LoginForm = ({changeState}: LoginFormProps) => {
                         </div>
                         <div className={"w-100"} style={{height: 40}}>
                             <ElevatedButton onClick={async () => {
-                                await handleSubmit(values.values.identity, values.values.password)
+                                await handleSubmit(values.values.login, values.values.password)
                                 values.isSubmitting = false;
                             }} label={"Войти"} disabled={!(values.isValid && values.dirty) || values.isSubmitting}/>
                         </div>

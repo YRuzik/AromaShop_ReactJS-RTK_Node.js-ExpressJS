@@ -1,0 +1,13 @@
+.profile-container {
+    width: 100%;
+    margin-top: 200px;
+    position: relative;
+}
+
+.profile-block-container {
+    margin-bottom: 30px;
+    padding: 2%;
+    box-shadow: 15px 15px 25px 15px rgba(0,0,0,.05);
+    background-color: var(--main-bg);
+    border-radius: var(--default-br);
+}

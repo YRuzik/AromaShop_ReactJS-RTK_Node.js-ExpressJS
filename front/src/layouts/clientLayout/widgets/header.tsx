@@ -21,7 +21,8 @@ const Header = () => {
             <div className="pos-a w-100" style={{paddingTop: 20}}>
                 <div className="body-container flexbox-sb-c">
                     <div className="flexbox-line al-i-c">
-                        <img src={logo} width={80} onClick={() => navigate("/")} style={{cursor: 'pointer'}} alt={"logo"}/>
+                        <img src={logo} width={80} onClick={() => navigate("/")} style={{cursor: 'pointer'}}
+                             alt={"logo"}/>
                         <h1 style={{letterSpacing: '10px'}}>{Labels.companyName.toUpperCase()}</h1>
                     </div>
                     <div></div>
@@ -31,7 +32,9 @@ const Header = () => {
                     {/*    <ElevatedButton label="+380 630 130 103" onClick={() => {*/}
                     {/*    }}/>*/}
                     {/*</div>*/}
-                    {token && user ? <div className={"flexbox-line"}><Icon icon={AppIcons.person} color="red"/><Icon
+                    {token && user ? <div className={"flexbox-line"}><Icon onClick={() => {
+                        navigate("/profile")
+                    }} icon={AppIcons.person} color="red"/><Icon
                         icon={AppIcons.logout} color="red" onClick={() => {
                         dispatch(logOut())
                     }}/></div> : <div className={"flexbox-line"}>

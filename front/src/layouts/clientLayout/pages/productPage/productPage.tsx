@@ -12,16 +12,20 @@ const ProductPage = () => {
     const {id} = useParams()
     const {data: pr} = useFetchSingleProductQuery(id ?? "")
     const [cart, setCart] = useState<ICartEntity[]>([])
+    const [added, setAdded] = useState(false)
 
     useEffect(() => {
         if (localStorage.getItem("aroma-cart")) {
             setCart(JSON.parse(localStorage.getItem("aroma-cart")!))
         }
-    }, [localStorage.getItem("aroma-cart"), cart]);
+    }, [localStorage.getItem("aroma-cart")]);
 
     useEffect(() => {
         if ((pr !== undefined) && (id !== undefined) && (id !== "")) {
             setProduct(pr)
+            if (cart.filter((obj) => obj.product_id === pr.product_id).length > 0) {
+                setAdded(true)
+            }
             window.scrollTo(0, 0)
         }
     }, [pr]);
@@ -42,12 +46,13 @@ const ProductPage = () => {
                             </div>
                             <div className={"w-25"}>
                                 <ElevatedButton
-                                    style={(cart.filter((obj) => obj.product_id === product.product_id).length > 0) ? ButtonStyles.white : ButtonStyles.green}
-                                    onClick={(cart.filter((obj) => obj.product_id === product.product_id).length > 0) ? () => {
+                                    style={added ? ButtonStyles.white : ButtonStyles.green}
+                                    onClick={added ? () => {
                                     } : () => {
                                         addToCart(product)
+                                        setAdded(true)
                                     }}
-                                    label={(cart.filter((obj) => obj.product_id === product.product_id).length > 0) ? "✓ добавлено" : "В корзину"}/>
+                                    label={added ? "✓ добавлено" : "В корзину"}/>
                             </div>
                         </div>
                         <hr style={{margin: "30px 0 20px 0"}}/>
