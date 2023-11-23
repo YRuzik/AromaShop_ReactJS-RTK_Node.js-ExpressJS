@@ -12,6 +12,7 @@ import {setCredentials} from "./utils/redux/features/auth/authSlice.ts";
 import {useRefreshMutation} from "./utils/redux/features/auth/authApiSlice.ts";
 import ProductPage from "./layouts/clientLayout/pages/productPage/productPage.tsx";
 import ProfilePage from "./layouts/clientLayout/pages/profilePage/profilePage.tsx";
+import {setCart} from "./utils/redux/features/common/commonSlice.ts";
 
 const App = () => {
     const [refresh] = useRefreshMutation()
@@ -19,13 +20,15 @@ const App = () => {
 
     ///TODO change interfaces
     useEffect(() => {
+        if (!localStorage.getItem("aroma-cart")) {
+            localStorage.setItem("aroma-cart", "[]")
+        } else {
+            dispatch(setCart(JSON.parse(localStorage.getItem("aroma-cart")!)))
+        }
         if (localStorage.getItem("aroma-token")) {
             refresh().then(v => {
                 dispatch(setCredentials(v.data))
             })
-        }
-        if (!localStorage.getItem("aroma-cart")) {
-            localStorage.setItem("aroma-cart", "[]")
         }
     }, [])
 

@@ -76,4 +76,33 @@ router.get("/orders/:id", async (req, res, next) => {
   }
 })
 
+router.post('/decline-order', async (req, res, next) => {
+    try {
+        const orderId = req.body.order_id
+        await knex("orders").where("order_id", orderId).update({
+            order_status: "Отменен"
+        })
+
+        const order = await knex
+            .select("*")
+            .from("orders")
+            .where("order_id", orderId)
+
+        const orderInfo = order[0].order_json
+
+        await (async function () {
+            for await (const obj of orderInfo) {
+                await knex("products").where("product_id", obj.product_id).update({
+                    quantity: obj.selected_quantity,
+                    available: true
+                })
+            }
+        })();
+
+        res.send("Отмена успешна")
+    } catch (e) {
+        next(e)
+    }
+})
+
 module.exports = router

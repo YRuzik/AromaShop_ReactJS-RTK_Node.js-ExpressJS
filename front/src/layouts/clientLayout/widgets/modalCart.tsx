@@ -4,14 +4,16 @@ import ElevatedButton from "../../../widgets/elevatedButton.tsx";
 import {ICartEntity, IProduct} from "../../../utils/interfaces/icommon.ts";
 import Icon, {AppIcons} from "../../../widgets/icon.tsx";
 import {publicUrl} from "../../../utils/common.ts";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentToken, selectCurrentUser} from "../../../utils/redux/features/auth/authSlice.ts";
 import {
     useCreateOrderMutation,
     useValidatePasswordMutation
 } from "../../../utils/redux/features/users/usersApiSlice.ts";
+import {selectCurrentCart, setCart} from "../../../utils/redux/features/common/commonSlice.ts";
+import {AnyAction, Dispatch} from "@reduxjs/toolkit";
 
-export const addToCart = (product: IProduct) => {
+export const addToCart = (product: IProduct, dispatch: Dispatch<AnyAction>) => {
     const existsCart: ICartEntity[] = JSON.parse(localStorage.getItem("aroma-cart")!)
     if (existsCart.some(e => e.product_id === product.product_id)) {
         existsCart.map((obj) => {
@@ -20,13 +22,15 @@ export const addToCart = (product: IProduct) => {
             }
         })
         localStorage.setItem("aroma-cart", JSON.stringify([...existsCart]))
+        dispatch(setCart([...existsCart]))
     } else {
         localStorage.setItem("aroma-cart", JSON.stringify([...existsCart, {...product, selected_quantity: 1}]))
+        dispatch(setCart([...existsCart, {...product, selected_quantity: 1}]))
     }
     return existsCart
 }
 
-export const removeFromCart = (product: ICartEntity, force: boolean) => {
+export const removeFromCart = (product: ICartEntity, force: boolean, dispatch: Dispatch<AnyAction>) => {
     const existsCart: ICartEntity[] = JSON.parse(localStorage.getItem("aroma-cart")!)
     let a = []
     if (force) {
@@ -44,6 +48,7 @@ export const removeFromCart = (product: ICartEntity, force: boolean) => {
         }
     }
     localStorage.setItem("aroma-cart", JSON.stringify([...a]))
+    dispatch(setCart([...a]))
     return a
 }
 
@@ -52,20 +57,15 @@ type modalCartProps = {
     onClose(): void
 }
 const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
+    const dispatch = useDispatch()
     const token = useSelector(selectCurrentToken)
-    const [cart, setCart] = useState<ICartEntity[]>([])
+    const cart = useSelector(selectCurrentCart)
     const [sum, setSum] = useState(0)
     const [validatePassword] = useValidatePasswordMutation()
     const [createOrder] = useCreateOrderMutation()
     const user = useSelector(selectCurrentUser)
     const [password, setInputPassword] = useState("")
     const [error, setError] = useState("")
-
-    useEffect(() => {
-        if (localStorage.getItem("aroma-cart")) {
-            setCart(JSON.parse(localStorage.getItem("aroma-cart")!))
-        }
-    }, [localStorage.getItem("aroma-cart")]);
 
     useEffect(() => {
         let tmpSum = 0;
@@ -138,9 +138,9 @@ const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
                                     <div className={"flexbox-line"}>
                                         <div onClick={() => {
                                             if (cartEntity.selected_quantity === 1) {
-                                                setCart(removeFromCart(cartEntity, true))
+                                                removeFromCart(cartEntity, true, dispatch)
                                             } else {
-                                                setCart(removeFromCart(cartEntity, false))
+                                                removeFromCart(cartEntity, false, dispatch)
                                             }
                                         }} className={"cart-entity-button"}>
                                             -
@@ -148,17 +148,17 @@ const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
                                         <div>
                                             {cartEntity.selected_quantity}
                                         </div>
-                                        <div onClick={() => {
-                                            setCart(addToCart(cartEntity))
+                                        {cartEntity.quantity > cartEntity.selected_quantity ? <div onClick={() => {
+                                            addToCart(cartEntity, dispatch)
                                         }} className={"cart-entity-button"}>
                                             +
-                                        </div>
+                                        </div> : null}
                                     </div>
                                 </div>
                                 <div className={"flexbox-line al-i-c w-25 jc-e"}>
                                     <h2>{cartEntity.selected_quantity * cartEntity.price} руб.</h2>
                                     <Icon icon={AppIcons.close} onClick={() => {
-                                        setCart(removeFromCart(cartEntity, true))
+                                        removeFromCart(cartEntity, true, dispatch)
                                     }}/>
                                 </div>
 

@@ -11,3 +11,10 @@
     background-color: var(--main-bg);
     border-radius: var(--default-br);
 }
+
+.order-inner-container {
+    background: var(--main-gradient);
+    border-radius: var(--default-br);
+    padding: 2%;
+    box-shadow: inset 0 0 15px rgba(0,0,0,.25);
+}

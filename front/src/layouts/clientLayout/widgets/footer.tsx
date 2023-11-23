@@ -14,13 +14,13 @@ const Footer = () => {
         </div>
         <div className="flexbox-column w-25">
             <h2>
-                Категории
+                Самые лучшие свечки
             </h2>
             
         </div>
         <div className="flexbox-column w-25">
             <h2>
-                Информация
+                На диком западе
             </h2>
             
         </div>

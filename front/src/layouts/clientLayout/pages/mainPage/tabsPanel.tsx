@@ -1,22 +1,25 @@
 import ImageContainer from "../../../../widgets/imageContainer";
-import photo from "../../../../assets/img/mock_photo.jpg";
+import {useFetchProductsQuery} from "../../../../utils/redux/features/common/commonApiSlice.ts";
 
 const TabsPanel = () => {
+    const {data: products} = useFetchProductsQuery()
   return (
-    <div className="tabs-panel">
-      <div id="large">
-        <ImageContainer image={photo} />
-      </div>
-      <div id="min-1">
-        <ImageContainer image={photo} />
-      </div>
-      <div id="min-2">
-        <ImageContainer image={photo} />
-      </div>
-      <div id="min-3">
-        <ImageContainer image={photo} />
-      </div>
-    </div>
+    <>
+        {(products !== undefined) ? <div className="tabs-panel">
+            <div id="large">
+                <ImageContainer product_id={products[0].product_id} image={products[0].image_url} />
+            </div>
+            <div id="min-1">
+                <ImageContainer product_id={products[1].product_id} image={products[1].image_url} />
+            </div>
+            <div id="min-2">
+                <ImageContainer product_id={products[2].product_id} image={products[2].image_url} />
+            </div>
+            <div id="min-3">
+                <ImageContainer product_id={products[3].product_id} image={products[3].image_url} />
+            </div>
+        </div> : null}
+    </>
   );
 };
 

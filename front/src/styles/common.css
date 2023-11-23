@@ -17,6 +17,11 @@ h2 {
   font-size: 150%;
 }
 
+h3 {
+  font-family: var(--t-title);
+  font-size: 115%;
+}
+
 p {
   font-family: var(--t-body);
   font-size: 150%;
@@ -67,6 +72,14 @@ span {
   justify-content: end;
 }
 
+.common-transition {
+  transition: 0.3s ease-in-out;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .flexbox-sb-c {
   display: flex;
   justify-content: space-between;
@@ -109,4 +122,15 @@ span {
 
 .link-style-white:hover {
   color: rgb(128, 128, 128);
+}
+
+.clickable-text {
+  transition: .3s ease-in-out;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: underline;
+}
+
+.clickable-text:hover {
+  opacity: 0.8;
 }

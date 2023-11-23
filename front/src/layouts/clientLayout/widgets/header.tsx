@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logOut, selectCurrentToken, selectCurrentUser} from "../../../utils/redux/features/auth/authSlice.ts";
 import ModalCart from "./modalCart.tsx";
 import {useState} from "react";
+import {selectCurrentCart} from "../../../utils/redux/features/common/commonSlice.ts";
 
 const Header = () => {
     const [isOpen, setOpen] = useState(false)
@@ -14,6 +15,7 @@ const Header = () => {
     const token = useSelector(selectCurrentToken)
     const user = useSelector(selectCurrentUser)
     const dispatch = useDispatch()
+    const cart = useSelector(selectCurrentCart)
 
     return (
         <>
@@ -25,29 +27,17 @@ const Header = () => {
                              alt={"logo"}/>
                         <h1 style={{letterSpacing: '10px'}}>{Labels.companyName.toUpperCase()}</h1>
                     </div>
-                    <div></div>
-
                     <SearchBar/>
-                    {/*<div className={"w-25"}>*/}
-                    {/*    <ElevatedButton label="+380 630 130 103" onClick={() => {*/}
-                    {/*    }}/>*/}
-                    {/*</div>*/}
                     {token && user ? <div className={"flexbox-line"}><Icon onClick={() => {
                         navigate("/profile")
-                    }} icon={AppIcons.person} color="red"/><Icon
-                        icon={AppIcons.logout} color="red" onClick={() => {
+                    }} icon={AppIcons.person} color="red" label={"Профиль"}/><Icon
+                        icon={AppIcons.logout} label={"Выйти"} color="red" onClick={() => {
                         dispatch(logOut())
                     }}/></div> : <div className={"flexbox-line"}>
                         <Link to={"/login"} className={"link-style mr-10"}>Войти</Link>
                         <Link to={"/login"} className={"link-style"}>Зарегистрироваться</Link>
-                        {/*<Icon icon={AppIcons.login} onClick={() => navigate("/login")}/>*/}
                     </div>}
-                    <Icon icon={AppIcons.cart} onClick={() => setOpen(true)}/>
-
-                    <div>
-                        <div></div>
-                        <div></div>
-                    </div>
+                    <Icon counterValue={(cart.length > 0) ? cart.length : undefined} icon={AppIcons.cart} onClick={() => setOpen(true)}/>
                 </div>
             </div>
         </>

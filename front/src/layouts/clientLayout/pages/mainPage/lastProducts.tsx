@@ -21,7 +21,7 @@ const LastProducts = () => {
             {Labels.mostPopularDesc.toLowerCase()}
           </div>
           <div>
-            <Link to={""}>{Labels.catalog}</Link>
+            <Link to={"/catalog"}>{Labels.catalog}</Link>
           </div>
         </div>
         <TabsPanel />

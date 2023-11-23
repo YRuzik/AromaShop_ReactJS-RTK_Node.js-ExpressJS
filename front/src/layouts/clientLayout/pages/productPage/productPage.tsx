@@ -2,33 +2,35 @@ import {useParams} from "react-router-dom";
 import {useFetchSingleProductQuery} from "../../../../utils/redux/features/common/commonApiSlice.ts";
 import PreviewBlock from "../../widgets/previewBlock.tsx";
 import {useEffect, useState} from "react";
-import {ICartEntity, IProduct} from "../../../../utils/interfaces/icommon.ts";
+import {IProduct} from "../../../../utils/interfaces/icommon.ts";
 import UnicIdeaBlock from "../mainPage/unicIdeaBlock.tsx";
 import ElevatedButton, {ButtonStyles} from "../../../../widgets/elevatedButton.tsx";
 import {addToCart} from "../../widgets/modalCart.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {selectCurrentCart} from "../../../../utils/redux/features/common/commonSlice.ts";
 
 const ProductPage = () => {
+    const dispatch = useDispatch()
     const [product, setProduct] = useState<IProduct | null>(null)
     const {id} = useParams()
+    const cart = useSelector(selectCurrentCart)
     const {data: pr} = useFetchSingleProductQuery(id ?? "")
-    const [cart, setCart] = useState<ICartEntity[]>([])
     const [added, setAdded] = useState(false)
-
-    useEffect(() => {
-        if (localStorage.getItem("aroma-cart")) {
-            setCart(JSON.parse(localStorage.getItem("aroma-cart")!))
-        }
-    }, [localStorage.getItem("aroma-cart")]);
 
     useEffect(() => {
         if ((pr !== undefined) && (id !== undefined) && (id !== "")) {
             setProduct(pr)
-            if (cart.filter((obj) => obj.product_id === pr.product_id).length > 0) {
-                setAdded(true)
-            }
             window.scrollTo(0, 0)
         }
     }, [pr]);
+
+    useEffect(() => {
+        if (pr !== undefined) {
+            if (cart.filter((obj) => obj.product_id === pr.product_id).length > 0) {
+                setAdded(true)
+            }
+        }
+    }, [cart, pr]);
 
     return (
         <>
@@ -49,7 +51,7 @@ const ProductPage = () => {
                                     style={added ? ButtonStyles.white : ButtonStyles.green}
                                     onClick={added ? () => {
                                     } : () => {
-                                        addToCart(product)
+                                        addToCart(product, dispatch)
                                         setAdded(true)
                                     }}
                                     label={added ? "✓ добавлено" : "В корзину"}/>

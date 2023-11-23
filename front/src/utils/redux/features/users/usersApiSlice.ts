@@ -17,6 +17,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: {...data}
             }),
         }),
+        declineOrder: builder.mutation<void, string>({
+            query: orderId => ({
+                url: '/decline-order',
+                method: "POST",
+                body: {order_id: orderId}
+            }),
+        }),
         fetchOrders: builder.query<IOrder[], string>({
             query: id => ({
                 url: `/orders/${id}`,
@@ -26,4 +33,9 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {useValidatePasswordMutation, useCreateOrderMutation, useFetchOrdersQuery} = usersApiSlice
+export const {
+    useValidatePasswordMutation,
+    useCreateOrderMutation,
+    useDeclineOrderMutation,
+    useFetchOrdersQuery
+} = usersApiSlice

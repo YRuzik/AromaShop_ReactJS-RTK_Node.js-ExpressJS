@@ -6,9 +6,9 @@ const Menu = () => {
     <div className="menu">
       <div className="body-container">
         <div className="flexbox-sb-c">
-          <div className="flexbox-sb-c w-100">
-            <Link to={""} className="link-style">
-              <h3>{Labels.sets}</h3>
+          <div className="flexbox-sb-c w-50">
+            <Link to={"/"} className="link-style">
+              <h3>{"Главная"}</h3>
             </Link>
             <div className="menu-slot">
               <Link to={"/catalog"} className="link-style-white">
@@ -16,12 +16,6 @@ const Menu = () => {
               </Link>
               <div className="menu-slot-particle"></div>
             </div>
-            <Link to={""} className="link-style">
-              <h3>{Labels.aroms}</h3>
-            </Link>
-            <Link to={""} className="link-style">
-              <h3>{Labels.production}</h3>
-            </Link>
             <Link to={"/contacts"} className="link-style">
               <h3>{Labels.contacts}</h3>
             </Link>
