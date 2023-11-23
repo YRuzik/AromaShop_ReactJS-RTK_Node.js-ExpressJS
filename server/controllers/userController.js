@@ -29,6 +29,8 @@ router.post("/create-order", async (req, res, next) => {
 
         const deserialized = JSON.parse(orderInfo);
 
+        console.log(deserialized)
+
         await knex('orders').insert({
             order_id: id,
             user_id: userId,
@@ -68,7 +70,6 @@ router.get("/orders/:id", async (req, res, next) => {
   try {
       const id = req.params.id;
       const orders = await knex.select("*").from("orders").where("user_id", id);
-        console.log(orders)
       res.status(200).send(orders)
 
   } catch (e) {

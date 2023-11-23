@@ -1,8 +1,11 @@
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../../../utils/redux/features/auth/authSlice.ts";
+import ElevatedButton from "../../../../widgets/elevatedButton.tsx";
+import {useNavigate} from "react-router-dom";
 
 const ProfileInfo = () => {
     const user = useSelector(selectCurrentUser)
+    const navigate = useNavigate()
     return (
         <div className={"profile-block-container w-100"}>
             <h1 style={{marginBottom: "25px"}}>Личные данные</h1>
@@ -22,9 +25,12 @@ const ProfileInfo = () => {
                 <div>
                     <span>Логин</span>: {user.login}
                 </div>
-                <div>
+                <div style={{paddingBottom: "20px"}}>
                     <span>Электронная почта</span>: {user.email}
                 </div>
+                {user.role === "admin" ? <ElevatedButton onClick={() => {
+                    navigate("/admin")
+                }} label={"Админ-панель"}/> : null}
             </div> : null}
         </div>
     )

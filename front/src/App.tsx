@@ -13,6 +13,8 @@ import {useRefreshMutation} from "./utils/redux/features/auth/authApiSlice.ts";
 import ProductPage from "./layouts/clientLayout/pages/productPage/productPage.tsx";
 import ProfilePage from "./layouts/clientLayout/pages/profilePage/profilePage.tsx";
 import {setCart} from "./utils/redux/features/common/commonSlice.ts";
+import ClientLayout from "./layouts/clientLayout/clientLayout.tsx";
+import AdminLayout from "./layouts/adminLayout/adminLayout.tsx";
 
 const App = () => {
     const [refresh] = useRefreshMutation()
@@ -35,20 +37,20 @@ const App = () => {
     return (
         <div>
             <BrowserRouter>
-                <Header/>
                 <div className="main-block">
-                    <div style={{paddingTop: "100px"}}>
-                        <Menu/>
-                    </div>
                     <Routes>
-                        <Route path="/" element={<MainPage/>}/>
-                        <Route path="/catalog" element={<CatalogPage/>}/>
-                        <Route path="/catalog/:id" element={<ProductPage/>}/>
-                        <Route path="/contacts" element={<AboutUsPage/>}/>
-                        <Route path="/login" element={<AuthLayout/>}/>
-                        <Route path="/profile" element={<ProfilePage/>}/>
+                        <Route path="/" element={<ClientLayout/>}>
+                            <Route index element={<MainPage/>}/>
+                            <Route path="/catalog" element={<CatalogPage/>}/>
+                            <Route path="/catalog/:id" element={<ProductPage/>}/>
+                            <Route path="/contacts" element={<AboutUsPage/>}/>
+                            <Route path="/login" element={<AuthLayout/>}/>
+                            <Route path="/profile" element={<ProfilePage/>}/>
+                        </Route>
+                        <Route path="/admin" element={<AdminLayout/>}>
+
+                        </Route>
                     </Routes>
-                    <Footer/>
                 </div>
 
             </BrowserRouter>

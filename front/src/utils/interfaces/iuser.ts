@@ -8,6 +8,7 @@ export interface IUser {
     login: string
     password: string
     email: string
+    role: string
 }
 
 export interface IUserLogin {

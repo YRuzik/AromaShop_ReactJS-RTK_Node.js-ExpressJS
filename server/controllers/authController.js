@@ -13,7 +13,11 @@ router.post('/auth', async (req, res, next) => {
         const {login, password} = req.body;
         if (!login || !password) return res.status(400).json({'message': 'Username and password are required.'});
 
-        const foundUser = await knex.select("*").from("users").where("login", login);
+        const foundUser = await knex
+            .select("*")
+            .from("users")
+            .join("roles", "roles.r_id", "users.role_id")
+            .where("login", login);
         if (foundUser.length <= 0) return res.sendStatus(401); //Unauthorized
 
         const extractedUser = foundUser[0]
@@ -113,6 +117,7 @@ router.get('/refresh', async (req, res, next) => {
         const user = await knex
             .select('*')
             .from('users')
+            .join("roles", "roles.r_id", "users.role_id")
             .where('id', userData.id)
 
         const extractedUser = user[0]
