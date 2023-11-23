@@ -4,10 +4,11 @@ const router = require('express').Router()
 const bcrypt = require('bcrypt')
 const uuid = require('uuid')
 const jwt = require('jsonwebtoken')
+const tokenService = require("../services/tokenService")
 
 router.post('/auth', async (req, res, next) => {
     try {
-        const cookies = req.cookies;
+        const {jwtRefresh} = req.cookies;
 
         const {login, password} = req.body;
         if (!login || !password) return res.status(400).json({'message': 'Username and password are required.'});
@@ -20,46 +21,30 @@ router.post('/auth', async (req, res, next) => {
         const match = await bcrypt.compare(password, extractedUser.password);
 
         if (match) {
-            const accessToken = jwt.sign(
-                {
-                    "UserInfo": {
-                        "login": extractedUser.login,
-                        "role": extractedUser.role
-                    }
-                },
-                process.env.ACCESS_TOKEN_SECRET,
-                {expiresIn: '10s'}
-            );
-            const newRefreshToken = jwt.sign(
-                {"login": extractedUser.login},
-                process.env.REFRESH_TOKEN_SECRET,
-                {expiresIn: '1d'}
-            );
 
-
-                const refreshToken = cookies.jwt;
+            const {accessToken, refreshToken} = tokenService.generateTokens(extractedUser)
                 const foundToken = await knex
                     .select("*")
                     .from("refresh_tokens")
                     .where("user_id", extractedUser.id);
-                console.log(foundToken)
+
                 if (foundToken[0]) {
                     await knex('refresh_tokens')
                         .where("user_id", extractedUser.id)
-                        .update("token", newRefreshToken)
+                        .update("token", refreshToken)
                 } else {
                     await knex('refresh_tokens')
                         .insert({
                             user_id: extractedUser.id,
-                            token: refreshToken
+                            token: jwtRefresh
                         })
                 }
 
-            if (cookies?.jwt) {
-                res.clearCookie('jwt', {httpOnly: true, sameSite: 'None', secure: true});
+            if (jwtRefresh) {
+                res.clearCookie('jwtRefresh', {httpOnly: true, sameSite: 'None', secure: true});
             }
 
-            res.cookie('jwt', newRefreshToken, {
+            res.cookie('jwtRefresh', refreshToken, {
                 httpOnly: true,
                 secure: true,
                 sameSite: 'None',
@@ -113,67 +98,34 @@ router.post('/registration', async (req, res, next) => {
 
 router.get('/refresh', async (req, res, next) => {
     try {
-        const cookies = req.cookies;
-        if (!cookies?.jwt) return res.sendStatus(401);
-        const refreshToken = cookies.jwt;
+        const {jwtRefresh} = req.cookies;
 
-        const foundUser = (await knex.select("*")
-            .from("refresh_tokens")
-            .joinRaw("join users ON users.id = refresh_tokens.user_id", [])
-            .where("token", refreshToken));
-
-        if (!foundUser[0]) {
-            await jwt.verify(
-                refreshToken,
-                process.env.REFRESH_TOKEN_SECRET,
-                async (err, decoded) => {
-                    if (err) return res.sendStatus(403); //Forbidden
-                    await knex("refresh_tokens")
-                        .where("token", refreshToken)
-                        .update("token", null)
-                }
-            )
-            return res.sendStatus(403); //Forbidden
+        if (!jwtRefresh) {
+            throw apiError.UnauthorizedError()
         }
 
-        await jwt.verify(
-            refreshToken,
-            process.env.REFRESH_TOKEN_SECRET,
-            async (err, decoded) => {
-                if (err || foundUser[0].login !== decoded.login) return res.sendStatus(403);
-                const accessToken = jwt.sign(
-                    {
-                        "UserInfo": {
-                            "login": decoded.login,
-                            "roles": foundUser[0].role
-                        }
-                    },
-                    process.env.ACCESS_TOKEN_SECRET,
-                    { expiresIn: '10s' }
-                );
+        const userData = jwt.verify(jwtRefresh, process.env.REFRESH_TOKEN_SECRET)
+        const tokenFromDB = await knex.select("*").from("refresh_tokens").where("token", jwtRefresh)
+        if (!userData || !tokenFromDB) {
+            throw apiError.UnauthorizedError()
+        }
 
-                const newRefreshToken = jwt.sign(
-                    { "login": foundUser[0].login },
-                    process.env.REFRESH_TOKEN_SECRET,
-                    { expiresIn: '1d' }
-                );
+        const user = await knex
+            .select('*')
+            .from('users')
+            .where('id', userData.id)
 
-                await knex('refresh_tokens')
-                    .where("user_id", foundUser[0].id)
-                    .update("token", newRefreshToken)
+        const extractedUser = user[0]
 
-                res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+        const {accessToken, refreshToken} = tokenService.generateTokens(extractedUser)
 
-                res.cookie('jwt', newRefreshToken, {
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: 'None',
-                    maxAge: 24 * 60 * 60 * 1000
-                });
+        await knex("refresh_tokens")
+            .where("user_id", extractedUser.id)
+            .update("token", refreshToken)
 
-                res.json({accessToken, user: foundUser[0]});
-            }
-        );
+        res.cookie('jwtRefresh', refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+
+        res.status(200).send({accessToken, user: extractedUser})
     } catch (e) {
         next(e)
     }

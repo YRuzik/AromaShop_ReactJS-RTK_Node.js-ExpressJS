@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser")
 const path = require("path");
 const app = express()
 const errorMiddleware = require('../middlewares/errorMiddleware')
-const PORT = 5001;
+const PORT = 6001;
 const rootController = require('../controllers/root')
 
 app.use(express.json())
