@@ -39,3 +39,20 @@ export interface IOrder {
     order_status: string
     stamp: string
 }
+
+export interface IAdminOrder {
+    order_id: string
+    user_id: string
+    order_json: ICartEntity[]
+    order_name: string
+    order_status: string
+    stamp: string
+    id?: string
+    name: string
+    surname: string
+    patronymic?: string
+    login: string
+    password: string
+    email: string
+    role: string
+}

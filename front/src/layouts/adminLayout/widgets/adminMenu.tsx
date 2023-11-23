@@ -15,10 +15,13 @@ const AdminMenu = () => {
             <hr style={{margin: "5% 0 0 0"}}/>
             <div className={"flexbox-column"}>
                 <AdminMenuEntity onClick={() => {
-
+                    navigate("/admin")
+                }} icon={AppIcons.star} label={"Главная"}/>
+                <AdminMenuEntity onClick={() => {
+                    navigate("/admin/orders")
                 }} icon={AppIcons.support} label={"Заказы"}/>
                 <AdminMenuEntity onClick={() => {
-
+                    navigate("/admin/catalog")
                 }} icon={AppIcons.cart} label={"Каталог"}/>
                 <AdminMenuEntity onClick={() => {
                     navigate("/")

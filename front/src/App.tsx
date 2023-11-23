@@ -1,9 +1,6 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import MainPage from "./layouts/clientLayout/pages/mainPage/mainPage"
-import Header from "./layouts/clientLayout/widgets/header"
-import Footer from "./layouts/clientLayout/widgets/footer"
 import CatalogPage from "./layouts/clientLayout/pages/catalog/catalogPage"
-import Menu from "./layouts/clientLayout/widgets/menu"
 import AboutUsPage from "./layouts/clientLayout/pages/aboutUs/aboutUsPage"
 import AuthLayout from "./layouts/clientLayout/pages/authRegistration/authLayout.tsx";
 import {useEffect} from "react";
@@ -15,6 +12,8 @@ import ProfilePage from "./layouts/clientLayout/pages/profilePage/profilePage.ts
 import {setCart} from "./utils/redux/features/common/commonSlice.ts";
 import ClientLayout from "./layouts/clientLayout/clientLayout.tsx";
 import AdminLayout from "./layouts/adminLayout/adminLayout.tsx";
+import AdminOrders from "./layouts/adminLayout/pages/adminOrders/adminOrders.tsx";
+import AdminCatalog from "./layouts/adminLayout/pages/adminCatalog/adminCatalog.tsx";
 
 const App = () => {
     const [refresh] = useRefreshMutation()
@@ -48,7 +47,8 @@ const App = () => {
                             <Route path="/profile" element={<ProfilePage/>}/>
                         </Route>
                         <Route path="/admin" element={<AdminLayout/>}>
-
+                            <Route path={"orders"} element={<AdminOrders/>}/>
+                            <Route path={"catalog"} element={<AdminCatalog/>}/>
                         </Route>
                     </Routes>
                 </div>

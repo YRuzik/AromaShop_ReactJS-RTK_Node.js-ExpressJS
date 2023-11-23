@@ -15,6 +15,7 @@
     margin-right: 20px;
     box-shadow: 5px 5px 30px 10px rgba(0,0,0,.1);
     padding: 2% 0 2% 0;
+    overflow-y: auto;
 }
 
 .admin-content-container {
@@ -24,6 +25,7 @@
     backdrop-filter: blur(20%);
     border-radius: var(--default-br);
     box-shadow: 5px 5px 30px 10px rgba(0,0,0,.1);
+    overflow-y: auto;
 }
 
 .admin-menu-entity {
@@ -34,4 +36,14 @@
 
 .admin-menu-entity:hover {
     background-color: rgba(0,0,0,.1 );
+}
+
+.admin-order-entity {
+    cursor: pointer;
+    min-height: 40px;
+    max-height: 100px;
+}
+
+.admin-order-entity:hover {
+    background-color: rgba(0,0,0,.10);
 }
