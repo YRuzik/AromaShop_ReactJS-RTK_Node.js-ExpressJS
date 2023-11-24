@@ -26,23 +26,27 @@ const ProductCard: FC<ProductCardProps> = ({product}) => {
     useEffect(() => {
         if (cart.filter((obj) => obj.product_id === product.product_id).length > 0) {
             setAdded(true)
+        } else {
+            setAdded(false)
         }
     }, [cart]);
 
     return (
-        <div onClick={() => navigate(`/catalog/${product_id}`)} className="product-card-container pos-r">
-            <div className="product-card-img">
-                <img src={`${publicUrl}${image_url}`} className={"product-card-img"} alt={title}/>
-            </div>
-            <div className="p-5 flexbox-column-sb" style={{height: 260}}>
-                <div>
-                    <h2>{title}</h2>
+        <div className={"product-card-container pos-r"}>
+            <div onClick={() => navigate(`/catalog/${product_id}`)}>
+                <div className="product-card-img">
+                    <img src={`${publicUrl}${image_url}`} className={"product-card-img"} alt={title}/>
                 </div>
-                <div className="flexbox-sb-c">
+                <div className="p-5 flexbox-column-sb" style={{height: 260}}>
                     <div>
-                        <h2 >
-                            {price} руб.
-                        </h2>
+                        <h2>{title}</h2>
+                    </div>
+                    <div className="flexbox-sb-c">
+                        <div>
+                            <h2 >
+                                {price} руб.
+                            </h2>
+                        </div>
                     </div>
                 </div>
             </div>
