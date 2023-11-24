@@ -102,6 +102,7 @@ const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
                                         await createOrder({order_json: cart, user_id: user.id!})
                                     }
                                     localStorage.setItem("aroma-cart", "[]")
+                                    dispatch(setCart([]))
                                 } catch (e: any) {
                                     setError(e.data.message)
                                 }

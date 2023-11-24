@@ -9,25 +9,21 @@ export const filtersArray = ["Году выпуска", "Наименовани�
 const Goods = () => {
     const {
         data: goods,
-        isLoading,
-        isFetching
     } = useFetchProductsQuery()
     const [sortedGoods, setSortedGoods] = useState<IProduct[]>([])
     const [selectedCategory, setCategory] = useState('Все товары')
     const [selectedFilter, setFilter] = useState('')
 
     useEffect(() => {
-        if (!isLoading && !isFetching && (goods !== undefined)) {
-            setSortedGoods(goods.slice())
-        }
         if (goods !== undefined) {
+            let tmpArray = goods.slice();
+            tmpArray = tmpArray.filter((obj) => obj.available)
             if (selectedCategory === "Все товары") {
-                setSortedGoods(goods)
+                setSortedGoods(tmpArray)
             } else {
-                setSortedGoods(goods.filter((obj) => obj.category === selectedCategory))
+                tmpArray = tmpArray.filter((obj) => obj.category === selectedCategory)
+                setSortedGoods(tmpArray)
             }
-
-            let tmpArray = sortedGoods.slice();
 
             /*if (selectedFilter === "") {
                 setSortedGoods(tmpArray.sort((a, b) => {

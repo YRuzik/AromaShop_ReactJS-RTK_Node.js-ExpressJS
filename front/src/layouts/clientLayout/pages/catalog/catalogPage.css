@@ -102,3 +102,10 @@
   transition: .2s ease-in-out;
   text-decoration: underline;
 }
+
+.product-card-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10000000;
+}

@@ -9,7 +9,6 @@ router.get("/products", async (req, res, next) => {
             .leftJoin("categories", "products.cat_id", "categories.category_id")
             .leftJoin("countries", "products.c_id", "countries.country_id")
             .leftJoin("candle_types", "products.t_id", "candle_types.type_id")
-            .where("available", true)
 
         res.send(products)
 

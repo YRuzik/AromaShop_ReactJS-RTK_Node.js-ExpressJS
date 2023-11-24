@@ -1,8 +1,11 @@
 import Icon, {AppIcons} from "../../../../widgets/icon";
-import {FC} from "react";
+import {FC, useEffect, useState} from "react";
 import {IProduct} from "../../../../utils/interfaces/icommon.ts";
 import {publicUrl} from "../../../../utils/common.ts";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {selectCurrentCart} from "../../../../utils/redux/features/common/commonSlice.ts";
+import {addToCart} from "../../widgets/modalCart.tsx";
 
 type ProductCardProps = {
     product: IProduct
@@ -10,14 +13,24 @@ type ProductCardProps = {
 
 const ProductCard: FC<ProductCardProps> = ({product}) => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const [added, setAdded] = useState(false)
+    const cart = useSelector(selectCurrentCart)
     const {
         title,
         price,
         image_url,
         product_id
     } = product
+
+    useEffect(() => {
+        if (cart.filter((obj) => obj.product_id === product.product_id).length > 0) {
+            setAdded(true)
+        }
+    }, [cart]);
+
     return (
-        <div onClick={() => navigate(`/catalog/${product_id}`)} className="product-card-container">
+        <div onClick={() => navigate(`/catalog/${product_id}`)} className="product-card-container pos-r">
             <div className="product-card-img">
                 <img src={`${publicUrl}${image_url}`} className={"product-card-img"} alt={title}/>
             </div>
@@ -31,8 +44,12 @@ const ProductCard: FC<ProductCardProps> = ({product}) => {
                             {price} руб.
                         </h2>
                     </div>
-                    <Icon icon={AppIcons.cart}/>
                 </div>
+            </div>
+            <div className={"product-card-button"}>
+                {added ? <Icon icon={AppIcons.done}/> : <Icon icon={AppIcons.cart} onClick={() => {
+                    addToCart(product, dispatch)
+                }}/>}
             </div>
         </div>
     );
