@@ -69,6 +69,9 @@ const ProductPage = () => {
                         <h1>Тип свечки</h1>
                         <h2>{product.type_name}</h2>
                         <hr style={{margin: "30px 0 20px 0"}}/>
+                        <h1>Год производства</h1>
+                        <h2>{new Date(product.creation_date).getFullYear()} год</h2>
+                        <hr style={{margin: "30px 0 20px 0"}}/>
                     </div>
                 </div>
             </> : <div style={{height: "3000px"}}></div>}

@@ -36,28 +36,8 @@ router.post("/create-order", async (req, res, next) => {
             user_id: userId,
             order_json: orderInfo,
             order_name: orderName,
-            order_status: "Собирается",
+            order_status: "В ожидании",
         })
-
-        await (async function () {
-            for await (const obj of deserialized) {
-                const available = (obj.quantity - obj.selected_quantity) > 0
-                await knex("products").where("product_id", obj.product_id).update({
-                    quantity: obj.quantity - obj.selected_quantity,
-                    available: available
-                })
-            }
-        })();
-
-        setTimeout(async () => {
-            const ord = await knex.select("*").from("orders").where("order_id", id)
-            if (ord[0].order_status !== "Отменен") {
-                await knex('orders').update({
-                    order_status: "Готов к выдаче"
-                }).where("order_id", id)
-            }
-        }, 30000)
-
 
         res.send({message: "Заказ сформирован"})
 
@@ -94,7 +74,7 @@ router.post('/decline-order', async (req, res, next) => {
         await (async function () {
             for await (const obj of orderInfo) {
                 await knex("products").where("product_id", obj.product_id).update({
-                    quantity: obj.selected_quantity,
+                    quantity: obj.quantity,
                     available: true
                 })
             }

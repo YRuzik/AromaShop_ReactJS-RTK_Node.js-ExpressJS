@@ -9,7 +9,10 @@ export interface IProduct {
     quantity: number,
     country: string,
     type_name: string,
-    category: string
+    category: string,
+    cat_id: number,
+    c_id: number,
+    t_id: number
 }
 
 export interface ICartEntity {

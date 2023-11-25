@@ -3,7 +3,7 @@ import {
     useFetchCategoriesQuery,
 } from "../../../../utils/redux/features/common/commonApiSlice.ts";
 import {filtersArray} from "./goods.tsx";
-import Icon, {AppIcons} from "../../../../widgets/icon.tsx";
+import SelectableText from "../../../../widgets/selectableText.tsx";
 
 type filterGoodsProps = {
     onCategory(s: string): void;
@@ -54,7 +54,7 @@ const FilterGoods: FC<filterGoodsProps> = ({onCategory, onFilter}) => {
                     <h2>Отфильтровать по:</h2>
                 </div>
                 {filtersArray.map((filter, i) => (
-                    <div onClick={() => {
+                    <SelectableText key={i} label={filter} isSelected={selectedFilter === filter} onClick={() => {
                         if (selectedFilter === filter) {
                             setFilter("")
                             onFilter("")
@@ -62,9 +62,7 @@ const FilterGoods: FC<filterGoodsProps> = ({onCategory, onFilter}) => {
                             setFilter(filter)
                             onFilter(filter)
                         }
-                    }} className={`f-container flexbox-line al-i-c ${selectedFilter === filter ? "f-container-active" : null}`} key={i}>
-                        {selectedFilter === filter ? <Icon icon={AppIcons.done} size={20}/> : null}{filter}
-                    </div>
+                    }} />
                 ))}
             </div>
         </div>

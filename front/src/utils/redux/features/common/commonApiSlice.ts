@@ -20,7 +20,7 @@ export const commonApiSlice = apiSlice.injectEndpoints({
             query: (id) => ({
                 url: `/products/${id}`
             })
-        })
+        }),
     })
 })
 

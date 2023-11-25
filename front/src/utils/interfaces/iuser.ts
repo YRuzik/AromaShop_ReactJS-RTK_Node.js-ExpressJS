@@ -49,6 +49,7 @@ export interface IAdminOrder {
     stamp: string
     id?: string
     name: string
+    seen: boolean
     surname: string
     patronymic?: string
     login: string

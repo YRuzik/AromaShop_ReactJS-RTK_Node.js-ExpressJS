@@ -16,13 +16,13 @@ const AdminMenu = () => {
             <div className={"flexbox-column"}>
                 <AdminMenuEntity onClick={() => {
                     navigate("/admin")
-                }} icon={AppIcons.star} label={"Главная"}/>
+                }} icon={AppIcons.home} label={"Главная"}/>
                 <AdminMenuEntity onClick={() => {
                     navigate("/admin/orders")
                 }} icon={AppIcons.support} label={"Заказы"}/>
                 <AdminMenuEntity onClick={() => {
                     navigate("/admin/catalog")
-                }} icon={AppIcons.cart} label={"Каталог"}/>
+                }} icon={AppIcons.sell} label={"Каталог"}/>
                 <AdminMenuEntity onClick={() => {
                     navigate("/")
                 }} icon={AppIcons.logout} label={"Выйти"}/>

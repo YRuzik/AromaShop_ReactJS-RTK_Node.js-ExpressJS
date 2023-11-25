@@ -14,6 +14,8 @@ import ClientLayout from "./layouts/clientLayout/clientLayout.tsx";
 import AdminLayout from "./layouts/adminLayout/adminLayout.tsx";
 import AdminOrders from "./layouts/adminLayout/pages/adminOrders/adminOrders.tsx";
 import AdminCatalog from "./layouts/adminLayout/pages/adminCatalog/adminCatalog.tsx";
+import AdminSingleOrder from "./layouts/adminLayout/pages/adminOrders/adminSingleOrder.tsx";
+import AdminChangeProduct from "./layouts/adminLayout/pages/adminCatalog/adminChangeProduct.tsx";
 
 const App = () => {
     const [refresh] = useRefreshMutation()
@@ -48,7 +50,9 @@ const App = () => {
                         </Route>
                         <Route path="/admin" element={<AdminLayout/>}>
                             <Route path={"orders"} element={<AdminOrders/>}/>
+                            <Route path={"orders/:id"} element={<AdminSingleOrder/>}/>
                             <Route path={"catalog"} element={<AdminCatalog/>}/>
+                            <Route path={"catalog/:id"} element={<AdminChangeProduct/>}/>
                         </Route>
                     </Routes>
                 </div>

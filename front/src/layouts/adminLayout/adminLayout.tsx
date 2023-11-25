@@ -17,7 +17,7 @@ const AdminLayout = () => {
         <div className={"admin-layout"}>
             <div className={"flexbox-line"} style={{height: "95vh", paddingTop: "5vh"}}>
                 <AdminMenu/>
-                <div className={"admin-content-container w-75"}>
+                <div className={"admin-content-container w-75 pos-r"}>
                     <Outlet/>
                 </div>
             </div>

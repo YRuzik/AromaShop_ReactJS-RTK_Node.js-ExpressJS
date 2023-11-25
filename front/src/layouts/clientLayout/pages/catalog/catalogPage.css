@@ -86,7 +86,6 @@
 }
 
 .f-container {
-  padding-left: 30px;
   cursor: pointer;
   transition: .2s ease-in-out;
   color: rgb(128, 128, 128);
