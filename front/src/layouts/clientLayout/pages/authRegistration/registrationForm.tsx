@@ -215,6 +215,7 @@ const RegistrationForm = ({changeState}: RegistrationFormProps) => {
                         <div className={"w-100"} style={{height: 40}}>
                             <ElevatedButton onClick={async () => {
                                 await handleSubmit({
+                                    role: "",
                                     name: values.values.name,
                                     surname: values.values.surname,
                                     patronymic: values.values.patronymic,

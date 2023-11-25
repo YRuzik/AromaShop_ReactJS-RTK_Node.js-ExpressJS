@@ -3,9 +3,11 @@ import {FC} from "react";
 import {IProduct} from "../../../../utils/interfaces/icommon.ts";
 import {publicUrl} from "../../../../utils/common.ts";
 import Icon, {AppIcons} from "../../../../widgets/icon.tsx";
+import {useNavigate} from "react-router-dom";
 
 const AdminCatalog = () => {
     const {data: products} = useFetchProductsQuery()
+    const navigate = useNavigate()
     return (
         <>
             <div className={"flexbox-column"}>
@@ -28,16 +30,17 @@ const AdminCatalog = () => {
                     key={index} {...product} />) : null}
             </div>
             <div className={"admin-orders-add-button"}>
-                <Icon icon={AppIcons.add} onClick={() => {}}/>
+                <Icon icon={AppIcons.add} onClick={() => {navigate('/admin/catalog/0')}}/>
             </div>
         </>
     )
 }
 
 const AdminCatalogEntity: FC<IProduct> = (product) => {
-    const {image_url, title, quantity, price} = product
+    const {image_url, title, quantity, price, product_id} = product
+    const navigate = useNavigate()
     return (
-        <div className={"flexbox-sb-c mb-1 admin-order-entity"}>
+        <div onClick={() => navigate(`/admin/catalog/${product_id}`)} className={"flexbox-sb-c mb-1 admin-order-entity"}>
             <div className={"w-25"}>
                 <img src={`${publicUrl}${image_url}`} style={{objectFit: "cover", width: "50%", height: "100px", borderRadius: "15px"}}
                      alt={title}/>

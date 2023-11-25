@@ -26,6 +26,7 @@
     border-radius: var(--default-br);
     box-shadow: 5px 5px 30px 10px rgba(0,0,0,.1);
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .admin-menu-entity {
@@ -55,4 +56,11 @@
     background-color: var(--secondary-light-purple);
     border-radius: 50px;
     z-index: 1000000000;
+}
+
+.admin-catalog-save {
+    height: 50px;
+    position: fixed;
+    bottom: 5%;
+    width: 100%;
 }

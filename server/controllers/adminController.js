@@ -15,6 +15,26 @@ router.get('/orders', async (req, res, next) => {
     }
 })
 
+router.get('/additional-info', async (req, res, next) => {
+    try {
+        const countries = await knex
+            .select("*")
+            .from("countries")
+
+        const categories = await knex
+            .select("*")
+            .from("categories")
+
+        const candleTypes = await knex
+            .select("*")
+            .from("candle_types")
+
+        res.status(200).json({categories, countries, types: candleTypes})
+    } catch (e) {
+        next(e)
+    }
+})
+
 router.get("/orders/:id", async (req, res, next) => {
     try {
         const id = req.params.id;
@@ -90,7 +110,7 @@ router.post('/change-product', async (req, res, next) => {
                 available,
                 creation_date,
                 quantity
-        })
+            })
 
         res.status(200).send("Товар успешно изменен")
     } catch (e) {

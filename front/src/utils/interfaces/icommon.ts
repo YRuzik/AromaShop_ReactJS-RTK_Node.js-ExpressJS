@@ -34,3 +34,19 @@ export interface ICategory {
     category_id: number,
     category: string
 }
+
+export interface ICountries {
+    country_id: number,
+    country: string
+}
+
+export interface ICandleTypes {
+    type_id: number,
+    type_name: string
+}
+
+export interface IAdditionalInfo {
+    categories: ICategory[]
+    types: ICandleTypes[]
+    countries: ICountries[]
+}

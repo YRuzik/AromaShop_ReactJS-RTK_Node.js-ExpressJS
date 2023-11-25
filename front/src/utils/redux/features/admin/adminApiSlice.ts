@@ -1,6 +1,6 @@
 import {apiSlice} from "../../api/apiSlice.ts";
 import {IAdminOrder} from "../../../interfaces/iuser.ts";
-import {IProduct} from "../../../interfaces/icommon.ts";
+import {IAdditionalInfo, IProduct} from "../../../interfaces/icommon.ts";
 
 export const adminApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -13,6 +13,12 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         fetchSingleOrder: builder.query<IAdminOrder, string>({
             query: orderId => ({
                 url: `/admin/orders/${orderId}`,
+            }),
+            keepUnusedDataFor: 5
+        }),
+        fetchAdditionalInfo: builder.query<IAdditionalInfo, void>({
+            query: () => ({
+                url: `/admin/additional-info`,
             }),
             keepUnusedDataFor: 5
         }),
@@ -37,5 +43,6 @@ export const {
     useFetchAllOrdersQuery,
     useChangeOrderMutation,
     useFetchSingleOrderQuery,
-    useChangeProductMutation
+    useChangeProductMutation,
+    useFetchAdditionalInfoQuery
 } = adminApiSlice
