@@ -9,6 +9,7 @@ import * as Yup from "yup"
 import {useEffect, useState} from "react";
 import {IProduct} from "../../../../utils/interfaces/icommon.ts";
 import ElevatedButton, {ButtonStyles} from "../../../../widgets/elevatedButton.tsx";
+import {publicUrl} from "../../../../utils/common.ts";
 
 const AdminChangeProduct = () => {
     const {id} = useParams()
@@ -73,134 +74,146 @@ const AdminChangeProduct = () => {
                             onSubmit={(v) => console.log(v)}>
                         {(values) => {
                             return (
-                                <Form>
+                                <div>
                                     <h1 className={"pb-1"}>
                                         {product.product_id ? "Редактирование товара" : "Создание товара"}
                                     </h1>
-                                    <div className={"pb-1"}>
-                                        <div>
-                                            <label>
-                                                Название
-                                            </label>
+                                    <hr style={{marginBottom: "10px"}}/>
+                                    <Form className={"flexbox-sb-s"}>
+                                        <div className={"w-50"}>
+                                            <div className={"pb-1"}>
+                                                <div>
+                                                    <label>
+                                                        Название
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <Field
+                                                        className={"outlined-input"}
+                                                        name={"title"}
+                                                        id={"title"}
+                                                        type={"title"}
+                                                        placeholder={"exampleDestroyer"}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className={"pb-1"}>
+                                                <div>
+                                                    <label>
+                                                        Цена
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <Field
+                                                        className={"outlined-input"}
+                                                        name={"price"}
+                                                        id={"price"}
+                                                        type={"price"}
+                                                        placeholder={"199"}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className={"pb-1"}>
+                                                <div>
+                                                    <label>
+                                                        Категория
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <select
+                                                        className={"outlined-input"}
+                                                        name={"cat_id"}
+                                                        id={"cat_id"}
+                                                        placeholder={"exampleDestroyer"}
+                                                    >
+                                                        {info.categories.map((obj, i) => <option
+                                                            key={i}>{obj.category}</option>)}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div className={"pb-1"}>
+                                                <div>
+                                                    <label>
+                                                        Тип товара
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <select
+                                                        className={"outlined-input"}
+                                                        name={"t_id"}
+                                                        id={"t_id"}
+                                                        placeholder={"exampleDestroyer"}
+                                                    >
+                                                        {info.types.map((obj, i) => <option
+                                                            key={i}>{obj.type_name}</option>)}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div className={"pb-1"}>
+                                                <div>
+                                                    <label>
+                                                        Страна производства
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <select
+                                                        className={"outlined-input"}
+                                                        name={"c_id"}
+                                                        id={"c_id"}
+                                                        placeholder={"exampleDestroyer"}
+                                                    >
+                                                        {info.countries.map((obj, i) => <option
+                                                            key={i}>{obj.country}</option>)}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div className={"pb-1"}>
+                                                <div>
+                                                    <label>
+                                                        Год выпуска
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <Field
+                                                        className={"outlined-input"}
+                                                        name={"creation_date"}
+                                                        id={"creation_date"}
+                                                        type={"creation_date"}
+                                                        placeholder={"exampleDestroyer"}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className={"pb-1"}>
+                                                <div>
+                                                    <label style={{paddingRight: '10px'}}>
+                                                        Доступен
+                                                    </label>
+                                                    <Field
+                                                        name={"creation_date"}
+                                                        id={"creation_date"}
+                                                        type={"checkbox"}
+                                                        placeholder={"exampleDestroyer"}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className={"admin-catalog-save flexbox-line"}>
+                                                <div className={"w-10 mr-1"}>
+                                                    <ElevatedButton onClick={() => {
+                                                    }} label={"Сохранить"} disabled={!values.dirty}/>
+                                                </div>
+                                                <div className={"w-10"}>
+                                                    <ElevatedButton onClick={() => {
+                                                        navigate(-1)
+                                                    }} label={"Отменить"} style={ButtonStyles.black}/>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <Field
-                                                className={"outlined-input"}
-                                                name={"title"}
-                                                id={"title"}
-                                                type={"title"}
-                                                placeholder={"exampleDestroyer"}
-                                            />
+                                        <div className={"w-50 pl-1 pt-1"}>
+                                            <img src={`${publicUrl}${product?.image_url}`}
+                                                 style={{height: 300, width: "100%", objectFit: "cover", borderRadius: "15px", boxShadow: "5px 5px 20px 5px rgba(0,0,0,.15)"}}/>
                                         </div>
-                                    </div>
-                                    <div className={"pb-1"}>
-                                        <div>
-                                            <label>
-                                                Цена
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <Field
-                                                className={"outlined-input"}
-                                                name={"price"}
-                                                id={"price"}
-                                                type={"price"}
-                                                placeholder={"199"}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={"pb-1"}>
-                                        <div>
-                                            <label>
-                                                Категория
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <select
-                                                className={"outlined-input"}
-                                                name={"cat_id"}
-                                                id={"cat_id"}
-                                                placeholder={"exampleDestroyer"}
-                                            >
-                                                {info.categories.map((obj, i) => <option key={i}>{obj.category}</option>)}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={"pb-1"}>
-                                        <div>
-                                            <label>
-                                                Тип товара
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <select
-                                                className={"outlined-input"}
-                                                name={"t_id"}
-                                                id={"t_id"}
-                                                placeholder={"exampleDestroyer"}
-                                            >
-                                                {info.types.map((obj, i) => <option key={i}>{obj.type_name}</option>)}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={"pb-1"}>
-                                        <div>
-                                            <label>
-                                                Страна производства
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <select
-                                                className={"outlined-input"}
-                                                name={"c_id"}
-                                                id={"c_id"}
-                                                placeholder={"exampleDestroyer"}
-                                            >
-                                                {info.countries.map((obj, i) => <option key={i}>{obj.country}</option>)}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={"pb-1"}>
-                                        <div>
-                                            <label>
-                                                Год выпуска
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <Field
-                                                className={"outlined-input"}
-                                                name={"creation_date"}
-                                                id={"creation_date"}
-                                                type={"creation_date"}
-                                                placeholder={"exampleDestroyer"}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={"pb-1"}>
-                                        <div>
-                                            <label style={{paddingRight: '10px'}}>
-                                                Доступен
-                                            </label>
-                                            <Field
-                                                name={"creation_date"}
-                                                id={"creation_date"}
-                                                type={"checkbox"}
-                                                placeholder={"exampleDestroyer"}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={"admin-catalog-save flexbox-line"}>
-                                        <div className={"w-10 mr-1"}>
-                                            <ElevatedButton onClick={() => {
-                                            }} label={"Сохранить"} disabled={!values.dirty}/>
-                                        </div>
-                                        <div className={"w-10"}>
-                                            <ElevatedButton onClick={() => {
-                                                navigate(-1)
-                                            }} label={"Отменить"} style={ButtonStyles.black}/>
-                                        </div>
-                                    </div>
-                                </Form>
+                                    </Form>
+                                </div>
                             )
                         }}
                     </Formik>
