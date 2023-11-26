@@ -137,6 +137,35 @@ router.post('/change-product', async (req, res, next) => {
     }
 })
 
+router.post('/change-category', async (req, res, next) => {
+    try {
+        const {category, category_id} = req.body;
+
+        if (req.body.deleted) {
+            await knex("categories")
+                .where("category_id", category_id)
+                .delete()
+        } else {
+            if (req.body.category_id != 0) {
+                await knex("categories")
+                    .where("category_id", req.body.category_id)
+                    .update({
+                        category
+                    })
+            } else {
+                await knex("categories")
+                    .insert({
+                        category
+                    })
+            }
+        }
+
+        res.status(200).send("Товар успешно изменен")
+    } catch (e) {
+        next(e)
+    }
+})
+
 router.post(
     "/upload",
     async (req, res, next) => {

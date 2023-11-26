@@ -33,7 +33,8 @@ export interface ICartEntity {
 
 export interface ICategory {
     category_id: number,
-    category: string
+    category: string,
+    deleted?: boolean
 }
 
 export interface ICountries {

@@ -1,6 +1,6 @@
 import {apiSlice} from "../../api/apiSlice.ts";
 import {IAdminOrder} from "../../../interfaces/iuser.ts";
-import {IAdditionalInfo, IProduct} from "../../../interfaces/icommon.ts";
+import {IAdditionalInfo, ICategory, IProduct} from "../../../interfaces/icommon.ts";
 
 export const adminApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -36,6 +36,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                 body: {...newProduct}
             }),
         }),
+        changeCategory: builder.mutation<void, ICategory>({
+            query: nCategory => ({
+                url: '/admin/change-category',
+                method: 'POST',
+                body: {...nCategory}
+            }),
+        }),
     })
 })
 
@@ -44,5 +51,6 @@ export const {
     useChangeOrderMutation,
     useFetchSingleOrderQuery,
     useChangeProductMutation,
-    useFetchAdditionalInfoQuery
+    useFetchAdditionalInfoQuery,
+    useChangeCategoryMutation
 } = adminApiSlice
