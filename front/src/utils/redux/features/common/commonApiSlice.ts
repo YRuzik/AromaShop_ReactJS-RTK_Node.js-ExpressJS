@@ -7,6 +7,7 @@ export const commonApiSlice = apiSlice.injectEndpoints({
             query: () => ({
                 url: '/products',
             }),
+            keepUnusedDataFor: 0
         }),
         fetchCategories: builder.query<ICategory[], void>(
             {
@@ -19,7 +20,8 @@ export const commonApiSlice = apiSlice.injectEndpoints({
         fetchSingleProduct: builder.query<IProduct, string>({
             query: (id) => ({
                 url: `/products/${id}`
-            })
+            }),
+            keepUnusedDataFor: 0
         }),
     })
 })

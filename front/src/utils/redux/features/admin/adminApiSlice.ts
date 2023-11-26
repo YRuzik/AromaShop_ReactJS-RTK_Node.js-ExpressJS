@@ -20,7 +20,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
             query: () => ({
                 url: `/admin/additional-info`,
             }),
-            keepUnusedDataFor: 5
+            keepUnusedDataFor: 0
         }),
         changeOrder: builder.mutation<IAdminOrder[], IAdminOrder>({
             query: newOrder => ({

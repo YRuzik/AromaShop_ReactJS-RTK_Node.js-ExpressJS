@@ -10,11 +10,12 @@ type ElevatedButtonType = {
     style?: ButtonStyles;
     onClick: Function;
     disabled?: boolean;
+    type?: "button" | "submit" | "reset" | undefined;
 }
 
-const ElevatedButton = ({label, style, onClick, disabled = false}: ElevatedButtonType) => {
+const ElevatedButton = ({label, style, onClick, disabled = false, type}: ElevatedButtonType) => {
     return (
-        <button onClick={() => onClick()} className={`base-button ${style ?? "green-button"}`} disabled={disabled}>{label}</button>
+        <button onClick={() => onClick()} type={type ?? "button"} className={`base-button ${style ?? "green-button"}`} disabled={disabled}>{label}</button>
     )
 }
 

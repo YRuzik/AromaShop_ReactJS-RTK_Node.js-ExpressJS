@@ -49,10 +49,13 @@
     background-color: rgba(0,0,0,.10);
 }
 
-.admin-orders-add-button {
+.admin-catalog-buttons {
     position: fixed;
     bottom: 6%;
     right: 2.5%;
+}
+
+.admin-orders-add-button {
     background-color: var(--secondary-light-purple);
     border-radius: 50px;
     z-index: 1000000000;
@@ -61,6 +64,28 @@
 .admin-catalog-save {
     height: 50px;
     position: fixed;
-    bottom: 5%;
+    bottom: 7%;
+    left: 76.5%;
     width: 100%;
+}
+
+.admin-select-file-input {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,.15);
+    border-radius: 50px;
+}
+
+.admin-select-file-photo {
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 5px 5px 20px 5px rgba(0,0,0,.15);
+    transition: .2s;
+    filter: brightness(80%);
 }

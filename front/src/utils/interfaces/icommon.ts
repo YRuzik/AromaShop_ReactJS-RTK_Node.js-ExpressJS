@@ -12,7 +12,8 @@ export interface IProduct {
     category: string,
     cat_id: number,
     c_id: number,
-    t_id: number
+    t_id: number,
+    deleted?: boolean
 }
 
 export interface ICartEntity {

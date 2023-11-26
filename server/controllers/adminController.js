@@ -1,6 +1,19 @@
 const knex = require('../configs/knex.config')
 const apiError = require('../errors/errors')
 const router = require('express').Router()
+const uuid = require('uuid')
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'cmd/public')
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${file.originalname}`)
+    }
+})
+
+const upload = multer({ storage: storage }).single('file')
 
 router.get('/orders', async (req, res, next) => {
     try {
@@ -98,24 +111,53 @@ router.post('/change-product', async (req, res, next) => {
     try {
         const {product_id, title, image_url, price, c_id, t_id, cat_id, available, creation_date, quantity} = req.body;
 
-        await knex("products")
-            .where("product_id", product_id)
-            .update({
-                title,
-                image_url,
-                price,
-                c_id,
-                t_id,
-                cat_id,
-                available,
-                creation_date,
-                quantity
-            })
+        if (req.body.deleted) {
+            await knex("products")
+                .where("product_id", product_id)
+                .delete()
+        } else {
+            if (req.body.product_id) {
+                await knex("products")
+                    .where("product_id", req.body.product_id)
+                    .update({
+                        product_id, title, image_url, price, c_id, t_id, cat_id, available, creation_date, quantity
+                    })
+            } else {
+                const id = uuid.v4()
+                await knex("products")
+                    .insert({
+                        product_id: id, title, image_url, price, c_id, t_id, cat_id, available, creation_date, quantity
+                    })
+            }
+        }
 
         res.status(200).send("Товар успешно изменен")
     } catch (e) {
         next(e)
     }
 })
+
+router.post(
+    "/upload",
+    async (req, res, next) => {
+        try {
+            await upload(req, res, async (err) => {
+
+                await knex('products')
+                    .where("product_id", req.body.product_id)
+                    .update({
+                        image_url: `${req.file.originalname}`
+                    })
+
+                if (err) {
+                    res.sendStatus(500);
+                }
+                res.send(req.file)
+            });
+        } catch (e) {
+            next(e)
+        }
+    }
+);
 
 module.exports = router

@@ -26,11 +26,18 @@ const AdminCatalog = () => {
                     </div>
                 </div>
                 <hr style={{margin: "10px 0 0px 0"}}/>
-                {(products !== undefined) ? products.map((product, index) => <AdminCatalogEntity
-                    key={index} {...product} />) : null}
+                <div style={{marginTop: "10px"}}>
+                    {(products !== undefined) ? products.map((product, index) => <AdminCatalogEntity
+                        key={index} {...product} />) : null}
+                </div>
             </div>
-            <div className={"admin-orders-add-button"}>
-                <Icon icon={AppIcons.add} onClick={() => {navigate('/admin/catalog/0')}}/>
+            <div className={"flexbox-line admin-catalog-buttons"}>
+                <div className={"admin-orders-add-button"} style={{marginRight: "10px"}}>
+                    <Icon icon={AppIcons.categories} onClick={() => {navigate('/admin/categories')}}/>
+                </div>
+                <div className={"admin-orders-add-button"}>
+                    <Icon icon={AppIcons.add} onClick={() => {navigate('/admin/catalog/0')}}/>
+                </div>
             </div>
         </>
     )

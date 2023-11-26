@@ -12,6 +12,8 @@ import home_i from "../assets/icons/home.svg"
 import add_i from "../assets/icons/add.svg"
 import sell_i from "../assets/icons/sell.svg"
 import circle_i from "../assets/icons/circle.svg"
+import edit_i from "../assets/icons/edit.svg"
+import categories_i from "../assets/icons/categories.svg"
 
 export enum AppIcons {
     person = person_i,
@@ -27,7 +29,9 @@ export enum AppIcons {
     home = home_i,
     add = add_i,
     sell = sell_i,
-    circle = circle_i
+    circle = circle_i,
+    edit = edit_i,
+    categories = categories_i
 }
 
 type IconProps = {
