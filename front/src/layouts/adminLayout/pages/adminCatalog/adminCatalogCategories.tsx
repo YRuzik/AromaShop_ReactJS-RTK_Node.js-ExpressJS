@@ -4,8 +4,6 @@ import {useFetchCategoriesQuery} from "../../../../utils/redux/features/common/c
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import ElevatedButton, {ButtonStyles} from "../../../../widgets/elevatedButton.tsx";
 import {useChangeCategoryMutation} from "../../../../utils/redux/features/admin/adminApiSlice.ts";
-import {useState} from "react";
-import {ICategory} from "../../../../utils/interfaces/icommon.ts";
 
 const AdminCatalogCategories = () => {
     const navigate = useNavigate()
