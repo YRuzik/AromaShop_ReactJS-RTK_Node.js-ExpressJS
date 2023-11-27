@@ -54,15 +54,17 @@ const FilterGoods: FC<filterGoodsProps> = ({onCategory, onFilter}) => {
                     <h2>Отфильтровать по:</h2>
                 </div>
                 {filtersArray.map((filter, i) => (
-                    <SelectableText key={i} label={filter} isSelected={selectedFilter === filter} onClick={() => {
-                        if (selectedFilter === filter) {
-                            setFilter("")
-                            onFilter("")
-                        } else {
-                            setFilter(filter)
-                            onFilter(filter)
-                        }
-                    }} />
+                    <div key={i} style={{paddingLeft: "20px", paddingTop: "6px"}}>
+                        <SelectableText label={filter} isSelected={selectedFilter === filter} onClick={() => {
+                            if (selectedFilter === filter) {
+                                setFilter("")
+                                onFilter("")
+                            } else {
+                                setFilter(filter)
+                                onFilter(filter)
+                            }
+                        }} />
+                    </div>
                 ))}
             </div>
         </div>

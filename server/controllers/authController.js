@@ -18,7 +18,7 @@ router.post('/auth', async (req, res, next) => {
             .from("users")
             .join("roles", "roles.r_id", "users.role_id")
             .where("login", login);
-        if (foundUser.length <= 0) return res.sendStatus(401); //Unauthorized
+        if (foundUser.length <= 0) throw apiError.BadRequest("Неправильный логин или пароль"); //Unauthorized
 
         const extractedUser = foundUser[0]
 
@@ -58,7 +58,7 @@ router.post('/auth', async (req, res, next) => {
             res.json({accessToken, user: extractedUser});
 
         } else {
-            res.sendStatus(401);
+            throw apiError.BadRequest("Неправильный логин или пароль");
         }
     } catch (e) {
         next(e)

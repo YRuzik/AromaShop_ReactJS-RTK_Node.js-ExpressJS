@@ -14,7 +14,7 @@ router.post("/verification-password", async (req, res, next) => {
             throw apiError.BadRequest("Пароли не совпадают")
         }
 
-        res.status(200).send("success")
+        res.status(200).json({message: "success"})
     } catch (e) {
         next(e)
     }

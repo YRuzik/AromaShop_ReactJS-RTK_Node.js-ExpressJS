@@ -92,20 +92,22 @@ const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
                     <input className={"classic-input mb-10"} placeholder={"Пароль"} type={"password"}
                            onChange={(v) => setInputPassword(v.currentTarget.value)}/>
                     <div>
-                        {error ?? <div className={"error-message"}>{error}</div>}
+                        {error.length > 0 ? <div className={"error-message"}>{error}</div> : null}
                         <ElevatedButton onClick={async () => {
-                            if (user !== null) {
-                                try {
-                                    await validatePassword({user_id: user.id!, password: password})
+                            try {
+                                if (user !== null) {
+                                    await validatePassword({user_id: user.id!, password: password}).unwrap()
                                     const cart = localStorage.getItem("aroma-cart");
                                     if (cart !== null) {
                                         await createOrder({order_json: cart, user_id: user.id!})
                                     }
                                     localStorage.setItem("aroma-cart", "[]")
                                     dispatch(setCart([]))
-                                } catch (e: any) {
-                                    setError(e.data.message)
+                                    setError("")
                                 }
+                            } catch (e: any) {
+                                console.log(e)
+                                setError(e.data.message)
                             }
                         }} label={(token === null) ? "Для оформления заказа авторизуйтесь" : "Заказать"}
                                         disabled={(cart.length === 0) || (token === null)}/>
