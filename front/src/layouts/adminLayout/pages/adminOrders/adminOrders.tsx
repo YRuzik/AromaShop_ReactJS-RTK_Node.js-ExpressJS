@@ -15,12 +15,24 @@ export enum OrderStatuses {
 
 const AdminOrders = () => {
     const {data: orders, refetch} = useFetchAllOrdersQuery()
+    const [changeOrder] = useChangeOrderMutation()
     const [sortedOrders, setSortedOrders] = useState<IAdminOrder[]>([])
     const [filter, setFilter] = useState<string | null>(null)
     const tableLabels = ["Дата и время", "ФИО", "Количество товаров", "Просмотрено"]
 
     useEffect(() => {
         setFilter(tableLabels[0])
+        return () => {
+            if (orders !== undefined) {
+                orders.forEach((order) => {
+                    if (!order.seen) {
+                        const cOrder = {...order}
+                        cOrder.seen = true;
+                        changeOrder(cOrder)
+                    }
+                })
+            }
+        }
     }, []);
 
     useEffect(() => {
@@ -59,7 +71,7 @@ const AdminOrders = () => {
                     })
             }
 
-            setSortedOrders(tmpArray)
+                setSortedOrders(tmpArray)
         }
     }, [filter, orders]);
 
@@ -92,59 +104,58 @@ const AdminOrders = () => {
             </div>
             <hr style={{margin: "10px 0 0px 0"}}/>
             {(orders !== undefined) ? sortedOrders.map((order, index) => <AdminOrderEntity
-                key={index} onChange={() => refetch()} order={order} />) : null}
+                key={index} onChange={async (nOrder) => {
+                    await changeOrder(nOrder)
+                    await refetch()
+            }} order={order} />) : null}
         </div>
     )
 }
 
 type adminOrderEntityProps = {
     order: IAdminOrder,
-    onChange(): void
+    onChange(order: IAdminOrder): Promise<void>
 }
 
 const AdminOrderEntity: FC<adminOrderEntityProps> = ({order, onChange}) => {
-    const [changeOrder] = useChangeOrderMutation()
     const {order_status, order_id, seen, order_json, stamp, name, surname, patronymic} = order
     const navigate = useNavigate()
-    useEffect(() => {
-        return () => {
-            if (!seen) {
-                const cOrder = {...order}
-                cOrder.seen = true;
-                changeOrder(cOrder)
-            }
-        }
-    }, []);
 
     return (
-        <div onClick={() => {
-            navigate(`/admin/orders/${order_id}`)
-        }} className={"flexbox-sb-c admin-order-entity"}>
-            <div className={"w-20"}>
-                {new Date(stamp).toLocaleDateString()} {new Date(stamp).toLocaleTimeString()}
+        <div className={"pos-r"}>
+            <div onClick={() => {
+                navigate(`/admin/orders/${order_id}`)
+            }} className={"flexbox-sb-c admin-order-entity"}>
+                <div className={"w-20"}>
+                    {new Date(stamp).toLocaleDateString()} {new Date(stamp).toLocaleTimeString()}
+                </div>
+                <div className={"w-20"}>
+                    {`${surname} ${name} ${patronymic}`.length > 20 ? `${surname} ${name} ${patronymic}`.slice(0, 20) + '...' : `${surname} ${name} ${patronymic}`}
+                </div>
+                <div className={"w-20"}>
+                    {order_json.length}
+                </div>
+                <div className={"w-20"}>
+                    {seen ? "Просмотрено" : "Новый"}
+                </div>
+                <div className={"w-20"}>
+                </div>
             </div>
-            <div className={"w-20"}>
-                {surname} {name} {patronymic}
-            </div>
-            <div className={"w-20"}>
-                {order_json.length}
-            </div>
-            <div className={"w-20"}>
-                {seen ? "Просмотрено" : "Новый"}
-            </div>
-            <div className={"w-20"}>
+            <div className={"pos-a flexbox-line al-i-c"} style={{
+                right: "0%",
+                top: "0%",
+                height: 40,
+            }}>
                 {OrderStatuses.processing === order_status ? <div className={"flexbox-line al-i-c jc-e"}>
                     <Icon size={30} icon={AppIcons.done} onClick={async () => {
                         const cOrder = {...order}
                         cOrder.order_status = OrderStatuses.ordering
-                        await changeOrder(cOrder)
-                        onChange()
+                        await onChange(cOrder)
                     }}/>
                     <Icon size={30} icon={AppIcons.close} onClick={async () => {
                         const cOrder = {...order}
                         cOrder.order_status = OrderStatuses.admin_declined
-                        await changeOrder(cOrder)
-                        onChange()
+                        await onChange(cOrder)
                     }}/>
                 </div> : <div className={"flexbox-line al-i-c jc-e"}>
                     {order_status}
