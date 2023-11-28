@@ -179,3 +179,11 @@
   position: absolute;
   z-index: 100000000;
 }
+
+.search-result-box {
+  position: absolute;
+  width: 100%;
+  box-shadow: 5px 5px 20px 5px rgba(0,0,0,.1);
+  z-index: 999999999999;
+  background-color: var(--main-bg);
+}
