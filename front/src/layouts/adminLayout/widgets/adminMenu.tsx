@@ -16,9 +16,6 @@ const AdminMenu = () => {
             <div className={"flexbox-column"}>
                 <AdminMenuEntity onClick={() => {
                     navigate("/admin")
-                }} icon={AppIcons.home} label={"Главная"}/>
-                <AdminMenuEntity onClick={() => {
-                    navigate("/admin/orders")
                 }} icon={AppIcons.support} label={"Заказы"}/>
                 <AdminMenuEntity onClick={() => {
                     navigate("/admin/catalog")
