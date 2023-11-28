@@ -66,12 +66,12 @@ router.post('/auth', async (req, res, next) => {
 })
 
 router.post('/registration', async (req, res, next) => {
-    const {name, surname, patronymic, login, email, password} = req.body;
-    const users = await knex.select('email', 'login').from('users')
-
     try {
+        const {name, surname, patronymic, login, email, password} = req.body;
+        const users = await knex.select('email', 'login').from('users')
+
         const hasDuplicates = await users.some((user) => {
-            return (user.email === req.body.email) || (user.login === req.body.login);
+            return (user.email === email) || (user.login === login);
         })
 
         if (hasDuplicates) {

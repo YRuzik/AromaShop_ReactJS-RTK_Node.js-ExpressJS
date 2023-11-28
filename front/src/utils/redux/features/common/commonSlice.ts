@@ -3,7 +3,12 @@ import {RootState} from "../../store.ts";
 import {IInitCommon} from "../../../interfaces/iredux.ts";
 
 const initialState: IInitCommon = {
-    cart: []
+    cart: [],
+    toasterState: {
+        isOpen: false,
+        title: "",
+        message: ""
+    }
 }
 
 const commonSlice = createSlice({
@@ -12,13 +17,17 @@ const commonSlice = createSlice({
         setCart: (state, action) => {
             state.cart = action.payload
         },
+        setToaster: (state, action) => {
+            state.toasterState = action.payload
+        }
     },
     name: 'common',
     initialState: initialState
 })
 
-export const {setCart} = commonSlice.actions
+export const {setCart, setToaster} = commonSlice.actions
 
 export default commonSlice.reducer
 
 export const selectCurrentCart = (state: RootState) => state.common.cart
+export const selectToasterState = (state: RootState) => state.common.toasterState

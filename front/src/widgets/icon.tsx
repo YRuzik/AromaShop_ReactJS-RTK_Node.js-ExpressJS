@@ -1,3 +1,6 @@
+//@ts-nocheck
+///TODO solve problem with string-path enum
+
 import person_i from "../assets/icons/person.svg"
 import cart_i from "../assets/icons/cart.svg"
 import fast_i from "../assets/icons/fast.svg"
@@ -33,7 +36,6 @@ export enum AppIcons {
     edit = edit_i,
     categories = categories_i
 }
-
 type IconProps = {
     icon: AppIcons;
     size?: number;

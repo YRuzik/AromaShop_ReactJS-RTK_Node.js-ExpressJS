@@ -136,3 +136,46 @@
   background-color: var(--main-purple);
   color: var(--main-bg);
 }
+
+.toaster-dialog {
+  position: fixed;
+  background-color: var(--main-bg);
+  transform: translateY(150%);
+  border: 3px solid var(--secondary-light-purple);
+  left: 1%;
+  bottom: 1%;
+  width: 20%;
+  padding: 10px;
+  border-radius: var(--min-br);
+  z-index: 99999999999999999999999;
+  box-shadow: 3px 5px 20px 5px rgba(0,0,0,.1);
+}
+
+.toaster-slide-in {
+  animation: slide-in 0.5s forwards;
+  -webkit-animation: slide-in 0.5s forwards;
+}
+
+.toaster-slide-out {
+  animation: slide-out 0.5s forwards;
+  -webkit-animation: slide-out 0.5s forwards;
+}
+
+@keyframes slide-in {
+  0% {transform: translateY(120%);}
+  100% {transform: translateY(0%);}
+}
+
+@keyframes slide-out {
+  0% {transform: translateY(0%);}
+  100% {transform: translateY(120%);}
+}
+
+.toaster-exit {
+  right: 5px;
+  top: 5px;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  z-index: 100000000;
+}

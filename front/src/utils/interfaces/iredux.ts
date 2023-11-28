@@ -8,4 +8,9 @@ export interface IInitState {
 
 export interface IInitCommon {
     cart: ICartEntity[]
+    toasterState: {
+        isOpen: boolean
+        title: string
+        message: string
+    }
 }

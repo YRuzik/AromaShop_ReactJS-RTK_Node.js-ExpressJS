@@ -28,6 +28,8 @@ const ProductPage = () => {
         if (pr !== undefined) {
             if (cart.filter((obj) => obj.product_id === pr.product_id).length > 0) {
                 setAdded(true)
+            } else {
+                setAdded(false)
             }
         }
     }, [cart, pr]);

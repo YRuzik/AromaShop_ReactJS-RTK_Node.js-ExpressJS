@@ -17,12 +17,12 @@ import AdminCatalog from "./layouts/adminLayout/pages/adminCatalog/adminCatalog.
 import AdminSingleOrder from "./layouts/adminLayout/pages/adminOrders/adminSingleOrder.tsx";
 import AdminChangeProduct from "./layouts/adminLayout/pages/adminCatalog/adminChangeProduct.tsx";
 import AdminCatalogCategories from "./layouts/adminLayout/pages/adminCatalog/adminCatalogCategories.tsx";
+import ModalToaster from "./widgets/modalToaster.tsx";
 
 const App = () => {
     const [refresh] = useRefreshMutation()
     const dispatch = useDispatch()
 
-    ///TODO change interfaces
     useEffect(() => {
         if (!localStorage.getItem("aroma-cart")) {
             localStorage.setItem("aroma-cart", "[]")
@@ -30,8 +30,8 @@ const App = () => {
             dispatch(setCart(JSON.parse(localStorage.getItem("aroma-cart")!)))
         }
         if (localStorage.getItem("aroma-token")) {
-            refresh().then(v => {
-                dispatch(setCredentials(v.data))
+            refresh().unwrap().then(v => {
+                dispatch(setCredentials(v))
             })
         }
     }, [])
@@ -40,6 +40,7 @@ const App = () => {
         <div>
             <BrowserRouter>
                 <div className="main-block">
+                    <ModalToaster/>
                     <Routes>
                         <Route path="/" element={<ClientLayout/>}>
                             <Route index element={<MainPage/>}/>

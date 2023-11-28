@@ -48,7 +48,7 @@ const OrderEntity: FC<IOrder> = (props) => {
                     <span>Дата </span>{new Date(stamp).toLocaleDateString()}
                 </div>
                 <div>
-                    {(order_status !== "Готов к выдаче") && !declined ? <ElevatedButton style={ButtonStyles.black} onClick={async () => {
+                    {(order_status !== "Готов к выдаче") && (order_status !== "Отменен администратором") && !declined ? <ElevatedButton style={ButtonStyles.black} onClick={async () => {
                         try {
                             await declineOrder(order_id)
                             setDeclined(true)

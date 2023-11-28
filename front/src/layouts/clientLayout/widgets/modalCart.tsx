@@ -10,10 +10,10 @@ import {
     useCreateOrderMutation,
     useValidatePasswordMutation
 } from "../../../utils/redux/features/users/usersApiSlice.ts";
-import {selectCurrentCart, setCart} from "../../../utils/redux/features/common/commonSlice.ts";
+import {selectCurrentCart, setCart, setToaster} from "../../../utils/redux/features/common/commonSlice.ts";
 import {AnyAction, Dispatch} from "@reduxjs/toolkit";
 
-export const addToCart = (product: IProduct, dispatch: Dispatch<AnyAction>) => {
+export const addToCart = (product: IProduct | ICartEntity, dispatch: Dispatch<AnyAction>) => {
     const existsCart: ICartEntity[] = JSON.parse(localStorage.getItem("aroma-cart")!)
     if (existsCart.some(e => e.product_id === product.product_id)) {
         existsCart.map((obj) => {
@@ -82,99 +82,102 @@ const ModalCart: FC<modalCartProps> = ({isOpen, onClose}) => {
     }, []);
 
     return (
-        <ModalDialog onClose={() => onClose()} isOpen={isOpen} content={
-            <div className={"flexbox-line al-i-s"} style={{height: 400}}>
-                <div className={"flexbox-column w-25"} style={{justifyContent: "space-between"}}>
-                    <div className={"mb-10"}>
-                        <h2 className={"mb-1"}>Оформить заказ</h2>
-                        Введите пароль для подтверждения заказа
-                    </div>
-                    <input className={"classic-input mb-10"} placeholder={"Пароль"} type={"password"}
-                           onChange={(v) => setInputPassword(v.currentTarget.value)}/>
-                    <div>
-                        {error.length > 0 ? <div className={"error-message"}>{error}</div> : null}
-                        <ElevatedButton onClick={async () => {
-                            try {
-                                if (user !== null) {
-                                    await validatePassword({user_id: user.id!, password: password}).unwrap()
-                                    const cart = localStorage.getItem("aroma-cart");
-                                    if (cart !== null) {
-                                        await createOrder({order_json: cart, user_id: user.id!})
+        <>
+            <ModalDialog onClose={() => onClose()} isOpen={isOpen} content={
+                <div className={"flexbox-line al-i-s"} style={{height: 400}}>
+                    <div className={"flexbox-column w-25"} style={{justifyContent: "space-between"}}>
+                        <div className={"mb-10"}>
+                            <h2 className={"mb-1"}>Оформить заказ</h2>
+                            Введите пароль для подтверждения заказа
+                        </div>
+                        <input className={"classic-input mb-10"} placeholder={"Пароль"} type={"password"}
+                               onChange={(v) => setInputPassword(v.currentTarget.value)}/>
+                        <div>
+                            {error.length > 0 ? <div className={"error-message"}>{error}</div> : null}
+                            <ElevatedButton onClick={async () => {
+                                try {
+                                    if (user !== null) {
+                                        await validatePassword({user_id: user.id!, password: password}).unwrap()
+                                        const cart = localStorage.getItem("aroma-cart");
+                                        if (cart !== null) {
+                                            await createOrder({order_json: cart, user_id: user.id!})
+                                        }
+                                        localStorage.setItem("aroma-cart", "[]")
+                                        dispatch(setCart([]))
+                                        setError("")
+                                        dispatch(setToaster({isOpen: true, title: "Заказ оформлен", message: "Заказ успешно оформлен, перейдите в личный кабинет и дождитесь пока менеджер его одобрит"}))
                                     }
-                                    localStorage.setItem("aroma-cart", "[]")
-                                    dispatch(setCart([]))
-                                    setError("")
+                                } catch (e: any) {
+                                    console.log(e)
+                                    setError(e.data.message)
                                 }
-                            } catch (e: any) {
-                                console.log(e)
-                                setError(e.data.message)
-                            }
-                        }} label={(token === null) ? "Для оформления заказа авторизуйтесь" : "Заказать"}
-                                        disabled={(cart.length === 0) || (token === null)}/>
+                            }} label={(token === null) ? "Для оформления заказа авторизуйтесь" : "Заказать"}
+                                            disabled={(cart.length === 0) || (token === null)}/>
+                        </div>
                     </div>
-                </div>
-                <div style={{borderRight: "2px solid black", height: "100%", margin: "0 20px 0 20px"}}>
+                    <div style={{borderRight: "2px solid black", height: "100%", margin: "0 20px 0 20px"}}>
 
-                </div>
-                <div className={"w-75 flexbox-column pos-r"} style={{justifyContent: 'space-between'}}>
-                    <h2>Корзина</h2>
-                    <div style={{maxHeight: "300px", overflowY: 'auto'}}>
-                        {cart.map((cartEntity, index) => <div key={index}>
-                            <div className={"flexbox-sb-c"}>
-                                <div className={"flexbox-line al-i-c w-25"}>
-                                    <img className={"cart-entity-img"} alt={cartEntity.title}
-                                         src={`${publicUrl}${cartEntity.image_url}`}/>
-                                    <h2 className={"pl-5"}>{cartEntity.title}</h2>
-                                </div>
-                                <div className={"flexbox-column al-i-c w-25"}>
-                                    <div>
-                                        <span>Тип</span>
+                    </div>
+                    <div className={"w-75 flexbox-column pos-r"} style={{justifyContent: 'space-between'}}>
+                        <h2>Корзина</h2>
+                        <div style={{maxHeight: "300px", overflowY: 'auto'}}>
+                            {cart.map((cartEntity, index) => <div key={index}>
+                                <div className={"flexbox-sb-c"}>
+                                    <div className={"flexbox-line al-i-c w-25"}>
+                                        <img className={"cart-entity-img"} alt={cartEntity.title}
+                                             src={`${publicUrl}${cartEntity.image_url}`}/>
+                                        <h2 className={"pl-5"}>{cartEntity.title}</h2>
                                     </div>
-                                    <div>
-                                        {cartEntity.type_name}
-                                    </div>
-                                </div>
-                                <div className={"flexbox-column al-i-c w-25"}>
-                                    <div>
-                                        <span>Кол-во</span>
-                                    </div>
-                                    <div className={"flexbox-line"}>
-                                        <div onClick={() => {
-                                            if (cartEntity.selected_quantity === 1) {
-                                                removeFromCart(cartEntity, true, dispatch)
-                                            } else {
-                                                removeFromCart(cartEntity, false, dispatch)
-                                            }
-                                        }} className={"cart-entity-button"}>
-                                            -
+                                    <div className={"flexbox-column al-i-c w-25"}>
+                                        <div>
+                                            <span>Тип</span>
                                         </div>
                                         <div>
-                                            {cartEntity.selected_quantity}
+                                            {cartEntity.type_name}
                                         </div>
-                                        {cartEntity.quantity > cartEntity.selected_quantity ? <div onClick={() => {
-                                            addToCart(cartEntity, dispatch)
-                                        }} className={"cart-entity-button"}>
-                                            +
-                                        </div> : null}
                                     </div>
-                                </div>
-                                <div className={"flexbox-line al-i-c w-25 jc-e"}>
-                                    <h2>{cartEntity.selected_quantity * cartEntity.price} руб.</h2>
-                                    <Icon icon={AppIcons.close} onClick={() => {
-                                        removeFromCart(cartEntity, true, dispatch)
-                                    }}/>
-                                </div>
+                                    <div className={"flexbox-column al-i-c w-25"}>
+                                        <div>
+                                            <span>Кол-во</span>
+                                        </div>
+                                        <div className={"flexbox-line"}>
+                                            <div onClick={() => {
+                                                if (cartEntity.selected_quantity === 1) {
+                                                    removeFromCart(cartEntity, true, dispatch)
+                                                } else {
+                                                    removeFromCart(cartEntity, false, dispatch)
+                                                }
+                                            }} className={"cart-entity-button"}>
+                                                -
+                                            </div>
+                                            <div>
+                                                {cartEntity.selected_quantity}
+                                            </div>
+                                            {cartEntity.quantity > cartEntity.selected_quantity ? <div onClick={() => {
+                                                addToCart(cartEntity, dispatch)
+                                            }} className={"cart-entity-button"}>
+                                                +
+                                            </div> : null}
+                                        </div>
+                                    </div>
+                                    <div className={"flexbox-line al-i-c w-25 jc-e"}>
+                                        <h2>{cartEntity.selected_quantity * cartEntity.price} руб.</h2>
+                                        <Icon icon={AppIcons.close} onClick={() => {
+                                            removeFromCart(cartEntity, true, dispatch)
+                                        }}/>
+                                    </div>
 
-                            </div>
-                            <hr style={{margin: "20px 0 20px 0"}}/>
-                        </div>)}
-                    </div>
-                    <div className={"w-100 flexbox-line jc-e"}>
-                        <h2>Всего: {sum} руб.</h2>
+                                </div>
+                                <hr style={{margin: "20px 0 20px 0"}}/>
+                            </div>)}
+                        </div>
+                        <div className={"w-100 flexbox-line jc-e"}>
+                            <h2>Всего: {sum} руб.</h2>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }/>
+            }/>
+        </>
     )
 }
 
