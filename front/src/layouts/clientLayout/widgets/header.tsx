@@ -34,8 +34,8 @@ const Header = () => {
                         icon={AppIcons.logout} label={"Выйти"} color="red" onClick={() => {
                         dispatch(logOut())
                     }}/></div> : <div className={"flexbox-line"}>
-                        <Link to={"/login"} className={"link-style mr-10"}>Войти</Link>
-                        <Link to={"/login"} className={"link-style"}>Зарегистрироваться</Link>
+                        <Link to={"/auth/login"} className={"link-style mr-10"}>Войти</Link>
+                        <Link to={"/auth/registration"} className={"link-style"}>Зарегистрироваться</Link>
                     </div>}
                     <Icon counterValue={(cart.length > 0) ? cart.length : undefined} icon={AppIcons.cart} onClick={() => setOpen(true)}/>
                 </div>

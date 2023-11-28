@@ -47,7 +47,7 @@ const App = () => {
                             <Route path="/catalog" element={<CatalogPage/>}/>
                             <Route path="/catalog/:id" element={<ProductPage/>}/>
                             <Route path="/contacts" element={<AboutUsPage/>}/>
-                            <Route path="/login" element={<AuthLayout/>}/>
+                            <Route path="/auth/:type" element={<AuthLayout/>}/>
                             <Route path="/profile" element={<ProfilePage/>}/>
                         </Route>
                         <Route path="/admin" element={<AdminLayout/>}>

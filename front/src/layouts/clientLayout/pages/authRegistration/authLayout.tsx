@@ -1,13 +1,14 @@
 import "./authRegistration.css"
 import LoginForm from "./loginForm.tsx";
 import Icon, {AppIcons} from "../../../../widgets/icon.tsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import RegistrationForm from "./registrationForm.tsx";
 import {useEffect, useState} from "react";
 
 const AuthLayout = () => {
+    const {type} = useParams()
     const [login, setLogin] = useState(true)
-    const navigator = useNavigate()
+    const navigate = useNavigate()
     let container = document.getElementById("formm")
 
     useEffect(() => {
@@ -18,11 +19,22 @@ const AuthLayout = () => {
     }, []);
 
     useEffect(() => {
-        if (container != null) {
+        if (type !== undefined) {
+            console.log(type)
+            if (type === "registration") {
+                setLogin(false)
+            } else if (type === "login") {
+                setLogin(true)
+            }
+        }
+    }, [type]);
+
+    useEffect(() => {
+        if (container !== null) {
             if (login) {
-                container.style.transform = "translateX(186%)"
-            } else {
                 container.style.transform = "translateX(0%)"
+            } else {
+                container.style.transform = "translateX(186%)"
             }
         } else {
             container = document.getElementById("formm")
@@ -31,11 +43,11 @@ const AuthLayout = () => {
     return (
         <div className={"auth-layout-bg"}>
             <div className={"close-icon"}>
-                <Icon icon={AppIcons.close} onClick={() => navigator(-1)}/>
+                <Icon icon={AppIcons.close} onClick={() => navigate("/")}/>
             </div>
             <div className={"form-bg"} id={"formm"}>
-                {login ? <LoginForm changeState={() => setLogin(false)}/> :
-                    <RegistrationForm changeState={() => setLogin(true)}/>}
+                {login ? <LoginForm changeState={() => navigate("/auth/registration")}/> :
+                    <RegistrationForm changeState={() => navigate("/auth/login")}/>}
             </div>
         </div>
     )
