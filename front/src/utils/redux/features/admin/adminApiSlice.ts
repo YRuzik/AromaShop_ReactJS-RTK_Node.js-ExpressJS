@@ -29,7 +29,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                 body: {...newOrder}
             }),
         }),
-        changeProduct: builder.mutation<void, IProduct>({
+        changeProduct: builder.mutation<{product_id: string} | void, IProduct>({
             query: newProduct => ({
                 url: '/admin/change-product',
                 method: 'POST',

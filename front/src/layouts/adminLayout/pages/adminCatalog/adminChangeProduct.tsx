@@ -6,7 +6,7 @@ import {useFetchSingleProductQuery} from "../../../../utils/redux/features/commo
 import {useNavigate, useParams} from "react-router-dom";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup"
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {IProduct} from "../../../../utils/interfaces/icommon.ts";
 import ElevatedButton, {ButtonStyles} from "../../../../widgets/elevatedButton.tsx";
 import {publicUrl} from "../../../../utils/common.ts";
@@ -14,6 +14,7 @@ import Icon, {AppIcons} from "../../../../widgets/icon.tsx";
 
 const AdminChangeProduct = () => {
     const {id} = useParams()
+    const fileInputRef = useRef<HTMLInputElement>(null)
     const {data: pr} = useFetchSingleProductQuery(id ?? "")
     const {data: info} = useFetchAdditionalInfoQuery()
     const [product, setProduct] = useState<IProduct | null>(null)
@@ -46,8 +47,7 @@ const AdminChangeProduct = () => {
 
     const handleSubmit = async (nProduct: IProduct) => {
         try {
-            await changeProduct(nProduct)
-            navigate(-1)
+            return await changeProduct(nProduct).unwrap();
         } catch (e: any) {
             setError(e.message)
         }
@@ -116,16 +116,19 @@ const AdminChangeProduct = () => {
 
                             onSubmit={async (values, {setSubmitting}) => {
                                 const cProduct: IProduct = {...product, ...values}
-                                // @ts-ignore
-                                let file = document.getElementById('selectFileInput')!.files[0];
-                                await handleSubmit(cProduct)
-                                if (file) {
-                                    const data = new FormData()
-                                    data.append('file', file)
-                                    data.append('product_id', product?.product_id)
-                                    await fetch("http://localhost:6001/api/admin/upload", {method: "POST", body: data,})
+
+                                const response = await handleSubmit(cProduct)
+                                if ((fileInputRef.current !== null) && (fileInputRef.current.files !== null)) {
+                                    let file = fileInputRef.current.files[0];
+                                    if (file && response !== undefined) {
+                                        const data = new FormData()
+                                        data.append('file', file)
+                                        data.append('product_id', response.product_id)
+                                        await fetch("http://localhost:6001/api/admin/upload", {method: "POST", body: data,})
+                                    }
                                 }
                                 setSubmitting(false)
+                                navigate(-1)
                             }}>
                         {(values) => {
                             return (
@@ -335,13 +338,14 @@ const AdminChangeProduct = () => {
                                                 </div>
                                                 <div className={"admin-select-file-input"}>
                                                     <Icon icon={AppIcons.edit} onClick={() => {
-                                                        const fileInput = document.getElementById("selectFileInput");
+                                                        const fileInput = fileInputRef.current;
                                                         if (fileInput !== null) {
                                                             fileInput.click()
                                                         }
                                                     }}/>
                                                 </div>
                                                 <input
+                                                    ref={fileInputRef}
                                                     style={{display: 'none'}}
                                                     id={"selectFileInput"}
                                                     name="file"

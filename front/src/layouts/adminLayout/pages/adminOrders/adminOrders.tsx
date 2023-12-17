@@ -22,17 +22,6 @@ const AdminOrders = () => {
 
     useEffect(() => {
         setFilter(tableLabels[0])
-        return () => {
-            if (orders !== undefined) {
-                orders.forEach((order) => {
-                    if (!order.seen) {
-                        const cOrder = {...order}
-                        cOrder.seen = true;
-                        changeOrder(cOrder)
-                    }
-                })
-            }
-        }
     }, []);
 
     useEffect(() => {
@@ -74,6 +63,20 @@ const AdminOrders = () => {
                 setSortedOrders(tmpArray)
         }
     }, [filter, orders]);
+
+    useEffect(() => {
+        return () => {
+            if (orders !== undefined) {
+                orders.forEach((order) => {
+                    if (!order.seen) {
+                        const cOrder = {...order}
+                        cOrder.seen = true;
+                        changeOrder(cOrder)
+                    }
+                })
+            }
+        }
+    }, [sortedOrders]);
 
     return (
         <div className={"flexbox-column"}>

@@ -115,6 +115,7 @@ router.post('/change-product', async (req, res, next) => {
             await knex("products")
                 .where("product_id", product_id)
                 .delete()
+            res.status(200).send("Товар успешно удален")
         } else {
             if (req.body.product_id) {
                 await knex("products")
@@ -122,16 +123,16 @@ router.post('/change-product', async (req, res, next) => {
                     .update({
                         product_id, title, image_url, price, c_id, t_id, cat_id, available, creation_date, quantity
                     })
+                res.status(200).json({product_id})
             } else {
                 const id = uuid.v4()
                 await knex("products")
                     .insert({
                         product_id: id, title, image_url, price, c_id, t_id, cat_id, available, creation_date, quantity
                     })
+                res.status(200).json({product_id: id})
             }
         }
-
-        res.status(200).send("Товар успешно изменен")
     } catch (e) {
         next(e)
     }
